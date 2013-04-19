@@ -1,0 +1,56 @@
+/**
+ * @package     webroot
+ * @subpackage  css
+ * @author      JpBaena13
+ */
+
+html, body {
+    font-family: Arial, sans-serif;
+}
+
+/*** SKELETON***/
+.untHeaderWrapper {
+    background: #373737;
+    max-height: 140px;
+    width: 100%;
+}
+.untHeaderContent {
+    margin: 0 auto;
+    max-width: 960px;
+}
+.untHeaderContent img {
+    margin-top: 22px;
+    width: 100%;
+}
+.untMainWrapper {
+    width: 100%;
+}
+.untMainContent {
+    margin: 0 auto;
+    max-width: 960px;
+}
+.untLeftContent {
+    border: thin solid #ccc;
+    display: inline-block;
+    height: 200px;
+    width: 49%;
+    vertical-align: top;
+}
+.untRightContent {
+    border: thin solid #ccc;
+    display: inline-block;
+    height: 200px;
+    width: 49%;
+    vertical-align: top;
+}
+.untFooterWrapper {
+    background-color: #373737;
+    color: white;
+    line-height: 1.5;
+    padding: 1em 0;
+    text-align: center;
+}
+.untFooterContent {
+
+}
+/*** END SKELETON***/

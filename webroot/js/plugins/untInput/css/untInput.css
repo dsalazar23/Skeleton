@@ -1,0 +1,175 @@
+/**
+ * JQuery Messages and Buttons Plug-in 0.1
+ *
+ * @author      JpBaena13
+ */
+
+/*----------------*/
+/* INPUT MESSAGES */
+/*----------------*/
+.untMsg {
+    color: #000;
+    font-size: 9pt;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+    text-align: left;
+    width: auto;
+}
+.untMsgWrapper {
+    display: inline-block;
+}
+.untMsgTitle {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.untMsgContent {
+    display: inline-block;
+    letter-spacing: -0.1px;
+    vertical-align: middle;
+}
+.untMsgIcon {
+    display: none;
+    border: thin inset #aaa;
+    margin-right: 50px;
+    padding: 5px;
+    vertical-align: middle;
+}
+.untMsgErr {
+    background-color: #edd;
+    border: thin solid red;
+}
+.untMsgOk {
+    background-color: #ded;
+    border: thin solid green;
+}
+.untMsgWrng {
+    background-color: #f5efcf;
+    border: thin solid #ffdd00;
+}
+
+/*---------------*/
+/* INPUT BUTTONS */
+/*---------------*/
+.untBtn {
+    background: url('../images/shadow_btn.png') repeat-x;
+    border: thin solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: "Trebuchet MS", "Arial", "sans-serif";
+    font-weight: bolder;
+    margin: 0;
+    min-height: 35px;
+    padding: 5px 10px;
+    text-decoration: none;
+
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.untBtnIcon {
+    display: none;
+    height: 19px;
+    width: 19px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.untBtnContent {
+    display: inline-block;
+    vertical-align: middle;
+}
+.untBtnSilver {
+    background: -moz-linear-gradient(top, #ffffff, #cccccc);
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc));
+    background-color: #dddddd;
+    border-left-color: #888;
+    border-top-color: #888;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#cccccc);
+    text-shadow: #ffffff 0px 1px 0px;
+}
+    .untBtnSilver:hover {
+        background: -moz-linear-gradient(top, #ffffff, #aaaaaa);
+        background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#aaaaaa));
+        background-color: #ccc;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#aaaaaa);
+    }
+    .untBtnSilver:visited {
+        color:black;
+    }
+.untBtnGold {
+    background-color: #d8a054;
+    background: -moz-linear-gradient(top, #f2d2ac, #d8a054);
+    background: -webkit-gradient(linear, left top, left bottom, from(#f2d2ac), to(#d8a054));
+    border-left-color: #dfb173;
+    border-top-color: #dfb173;
+    color: white;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#f2d2ac, endColorstr=#d8a054);
+    text-shadow: #555555 0px 1px 0px;
+}
+    .untBtnGold:hover {
+        color: #333;
+        background: -moz-linear-gradient(top, white, #d2ae6d);
+        background: -webkit-gradient(linear, left top, left bottom, from(white), to(#d2ae6d));
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#d2ae6d);
+        text-shadow: white 0px 1px 0px;
+    }
+    .untBtnGold:visited {
+        color: white;
+    }
+.btnWinCancel {
+    display: none;
+}
+
+/*---------------*/
+/* INPUT WINDOWS */
+/*---------------*/
+.untWinBG {
+    background: #ddd url('../images/diagonals_bg.png');
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+}
+.untWin {
+    background-color: #ccc;
+    border-radius: 7px;
+    height: auto;
+    padding: 8px;
+    opacity: 1;
+    position:absolute;
+    width: auto;
+    z-index: 10;
+    
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+.untWinHeader {
+    background-color: #d8a054;
+    border: thin solid sienna;
+    border-bottom: none; 
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 30px;  
+    padding-left: 20px;
+    text-align: left;
+    color: white;
+    text-shadow: #111 0px 1px 0px;
+}
+.untWinContent {
+    background-color: white;
+    border: thin solid #aaa;
+    border-bottom: thin solid #ccc; 
+    border-top: none;
+    padding: 10px 10px;
+}
+.untWinFooter {
+    text-align: center;
+    background-color: #eee;
+    border: thin solid #aaa;
+    border-top: none;
+    padding: 5px;
+}
+    .untWinFooter .untBtn {
+        margin: 0 10px;
+    }
