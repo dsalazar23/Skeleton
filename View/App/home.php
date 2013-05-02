@@ -19,7 +19,7 @@
         <?php require VIEW . 'Layouts' . DS . 'head.php'; ?>
 
         <!--Stylesheet para index-->
-        <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/index.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/home.css" media="screen" />
     </head>
 
     <body>
@@ -30,7 +30,6 @@
             <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> 
             to improve your experience.</p>
         <![endif]-->
-
 
         <header class="untHeaderWrapper">
             <div class="untHeaderContent">
@@ -56,6 +55,6 @@
         </footer>
 
         <!--Script para esta página-->
-        <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/index.js"></script>
+        <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/home.js"></script>
     </body>
 </html>
