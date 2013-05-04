@@ -11,7 +11,7 @@
 ?>
 <div class="untFooterContent">
    Construido por JpBaena13<br/>
-   <font style="font-size: 0.8em">jpbaena13@gmail.com</font>
+   <span style="font-size: 0.8em">jpbaena13@gmail.com</span>
 </div>
 
 
@@ -36,19 +36,16 @@
     <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery/jquery.mousewheel.js"></script>
 
     <!--Librería Modernizr -->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/modernizr.js"></script>
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/modernizr.min.js"></script>
+
+    <!-- Funciones para la restricción de texto-->
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL?>js/permissionsKeyPress.js"></script>
 
     <!--Librería JS que se carga por defecto al inicio de toda solicitud-->
     <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/bootstrap.js"></script>
 
     <!--Plugin JQuery para aplicar Placeholder sobre los campos textuales-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/plugins/placeholder.js"></script>
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>plugins/placeholder.js"></script>
     
     <!--Plugin JQuery para creación de Botones, mensajes y Ventanas emergentes-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/plugins/untInput/untInput.js"></script>
-    
-    <!-- Funciones para la restricción de texto-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL?>js/permissionsKeyPress.js"></script>
-    
-    <!-- Conjunto de funciones que permiten construir diferentes elementos de vista-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL?>js/Views.js"></script>    
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>plugins/untInput.js"></script>

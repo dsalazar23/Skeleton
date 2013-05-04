@@ -29,7 +29,7 @@
     }
     
 /**
- * Ruta completa al directorio que contiene todas las vistas
+ * Ruta completa al directorio que contiene todos los controladores
  */
     if (!defined('CONTROLLER')) {
         define('CONTROLLER', ROOT . 'Controller' . DS);
@@ -43,7 +43,7 @@
     }
 
 /**
- * Ruta completa al directorio que contiene todas las vistas
+ * Ruta completa al directorio que contiene todas las clases de dominio
  */
     if (!defined('MODEL')) {
         define('MODEL', ROOT . 'Model' . DS);
@@ -57,7 +57,7 @@
     }
     
 /**
- * Ruta completa al directorio que contiene todas las vistas
+ * Ruta completa al directorio que contiene las clases de acceso a datos
  */
     if (!defined('DATA_ACCESS')) {
         define('DATA_ACCESS', ROOT . 'DataAccess' . DS);
@@ -85,11 +85,18 @@
     }
     
 /**
- * Ruta absoluta al directorio que contiene todas las vistas de aplicación
+ * Ruta absoluta al directorio que contiene todas las vistas de errores
  */
     if (!defined('ERRORS_VIEW')) {
         define('ERRORS_VIEW', VIEW . 'Errors' . DS);
     }
+
+/**
+ * Ruta relativa al directorio del motor de plantillas Smarty
+ */
+    if (!defined('SMARTY_DIR')) {
+        define('SMARTY_DIR', ROOT . 'vendor' . DS . 'Smarty' . DS . 'libs' . DS);
+    }    
 
 /**
  * Ruta relativa al directorio raiz del sitio
@@ -108,27 +115,27 @@
 /**
  * Ruta relativa al directorio modules del sitio
  */
-    if (!defined('MODULES_URL')) {
-        define('MODULES_URL', WEBROOT_URL . 'modules/');
-    }
-
-/**
- * Ruta relativa al directorio modules del sitio
- */
     if (!defined('AJAX_URL')) {
         define('AJAX_URL', WEBROOT_URL . 'ajax/');
     }
     
-    require_once ROOT . 'Config' . DS . 'DataAccess' . DS . 'Connection.class.php';
-    require_once ROOT . 'Config' . DS . 'DataAccess' . DS . 'ConnectionFactory.class.php';
-    require_once ROOT . 'Config' . DS . 'DataAccess' . DS . 'ConnectionProperty.class.php';
-    require_once ROOT . 'Config' . DS . 'DataAccess' . DS . 'QueryExecutor.class.php';
-    require_once ROOT . 'Config' . DS . 'DataAccess' . DS . 'SqlQuery.class.php';
-    require_once ROOT . 'Config' . DS . 'DataAccess' . DS . 'Transaction.class.php';
+    require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'Connection.class.php';
+    require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'ConnectionFactory.class.php';
+    require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'ConnectionProperty.class.php';
+    require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'QueryExecutor.class.php';
+    require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'SqlQuery.class.php';
+    require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'Transaction.class.php';
     
     require_once ROOT . 'Config' . DS . 'Email' . DS . 'EmailConnection.php';
     require_once ROOT . 'Config' . DS . 'Email' . DS . 'EmailConnectionFactory.php';
     require_once ROOT . 'Config' . DS . 'Email' . DS . 'EmailConnectionProperty.php';
+
+    //TODO: Probando SAMRTY de manera Global
+    require_once SMARTY_DIR . 'Smarty.class.php';
+    $smarty = new Smarty();
+    $smarty->compile_dir  = dirname(SMARTY_DIR) . DS . 'templates_c' . DS;
+    $smarty->config_dir   = dirname(SMARTY_DIR) . DS . 'configs' . DS;
+    $smarty->cache_dir    = dirname(SMARTY_DIR) . DS . 'cache' . DS;
     
     include_once(LIB . 'FactoryDAO.class.php');
     require_once(LIB . 'i18n.class.php');

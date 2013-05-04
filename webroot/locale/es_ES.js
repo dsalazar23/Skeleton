@@ -7,6 +7,7 @@
  */
 
 var i18n = {
-    accept : 'Aceptas',
-    cancel : 'Cancelar'
+    accept 	: 'Aceptar',
+    cancel 	: 'Cancelar',
+    alert	: 'Alerta'
 }

@@ -1,10 +1,6 @@
 <?php
 
 /**
- * PHP 5
- *
- * Copyright 2011-2012, UnNotes, Inc. (http://unnotes.com)
- *
  * @generated
  * - Clase Generada Automaticamente - NO MODIFICAR MANUALMENTE
  * DAO Factory

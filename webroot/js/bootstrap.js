@@ -60,6 +60,10 @@
  * </ul>
  */
     function chooseLang(lang) {
+        if (lang == undefined) {
+            lang = 'es_ES'
+        }
+
         $.cookie('unnotes.lang', lang, { path: '/unnotes' });
         echo("<script type='text/javascript' src='/" + WEBROOT_URL + "locale/" + lang + ".js'></script>");
     }

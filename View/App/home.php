@@ -33,7 +33,7 @@
 
         <header class="untHeaderWrapper">
             <div class="untHeaderContent">
-                <img src="/<?php echo WEBROOT_URL ?>images/default/header.png" alt="Sistema de Bibliotecas"/>
+                <img src="/<?php echo WEBROOT_URL ?>images/default/header.png" alt="Sistema de Bibliotecas" width="980px" height="120px"/>
             </div>
         </header>
 

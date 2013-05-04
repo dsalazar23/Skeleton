@@ -11,7 +11,7 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(dirname(__FILE__)) . DS);
-define('DATA_ACCESS_CONFIG', ROOT . 'Config' . DS . 'DataAccess' . DS);
+define('DATA_SOURCE', ROOT . 'Config' . DS . 'DataSource' . DS);
 define('DATA_ACCESS', ROOT . 'DataAccess' . DS);
 define('MODEL_CLASS_PATH', ROOT . 'Model' . DS);
 define('LIB', ROOT . 'Lib' . DS);
@@ -19,12 +19,12 @@ define('TEMPLATES', LIB . 'Templates' . DS);
 define('INCLD', ROOT . 'include' . DS);
 
 
-require_once(DATA_ACCESS_CONFIG . 'Connection.class.php');
-require_once(DATA_ACCESS_CONFIG . 'ConnectionFactory.class.php');
-require_once(DATA_ACCESS_CONFIG . 'ConnectionProperty.class.php');
-require_once(DATA_ACCESS_CONFIG . 'QueryExecutor.class.php');
-require_once(DATA_ACCESS_CONFIG . 'SqlQuery.class.php');
-require_once(DATA_ACCESS_CONFIG . 'Transaction.class.php');
+require_once(DATA_SOURCE . 'Connection.class.php');
+require_once(DATA_SOURCE . 'ConnectionFactory.class.php');
+require_once(DATA_SOURCE . 'ConnectionProperty.class.php');
+require_once(DATA_SOURCE . 'QueryExecutor.class.php');
+require_once(DATA_SOURCE . 'SqlQuery.class.php');
+require_once(DATA_SOURCE . 'Transaction.class.php');
 
 require_once(LIB .'Template.class.php');
 

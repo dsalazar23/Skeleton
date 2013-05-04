@@ -26,14 +26,8 @@
     <!-- Stylesheet para JQuery QTIP-->
     <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/lib/jquery/jquery.qtip.min.css" />
 
-    <!--Stylesheet para Scrollpane-->
-    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/lib/jquery/jquery.jscrollpane.css" media="all" />
-    
-    <!--Stylesheet para Normalize-->
-    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/lib/normalize.css" media="all" />
-    
     <!--Stylesheet por Defecto-->
-    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/default.css" />
+    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/main.css" media="all" />
 
     <!-- Google Analytics: cambiar UA-XXXXX-X por el ID del sitio. -->
     <script>
