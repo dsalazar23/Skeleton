@@ -10,8 +10,8 @@
  */
 ?>
 <div class="untFooterContent">
-   Construido por JpBaena13<br/>
-   <span style="font-size: 0.8em">jpbaena13@gmail.com</span>
+   <div>Construido por JpBaena13</div>
+   <small>jpbaena13@gmail.com</small>
 </div>
 
 

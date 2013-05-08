@@ -7,40 +7,23 @@
 html, body
 	font-size 16px
 	
-	/*** SKELETON***/
+/*** SKELETON***/
+.untHeaderWrapper, .untMainWrapper, .untFooterWrapper
+	width 100%
+
+.untHeaderContent, .untMainContent, .untFooterContent
+	margin 0 auto
+	max-width 980px	
+
 .untHeaderWrapper
 	background #373737
 	max-height 140px
-	width 100%
-
-.untHeaderContent
-	margin 0 auto
-	max-width 960px
 
 .untHeaderContent img
-	margin-top 22px
-	width 100%
-
-.untMainWrapper
-	width 100%
+	margin-top 20px
 
 .untMainContent
-	margin 0 auto
-	max-width 960px
-
-.untLeftContent
-	border thin solid #ccc
-	display inline-block
-	height 200px
-	width 49%
-	vertical-align top
-
-.untRightContent
-	border thin solid #ccc
-	display inline-block
-	height 200px
-	width 49%
-	vertical-align top
+	overflow hidden
 
 .untFooterWrapper
 	background-color #373737
@@ -48,3 +31,24 @@ html, body
 	line-height 1.5
 	padding 1em 0
 	text-align center
+
+.untLeftContent, .untRightContent
+	background #eee
+	border thin solid #ccc
+	box-sizing border-box
+	float left
+	height auto
+	min-height 200px
+	padding 10px
+	width 50%
+
+@media screen and (max-width:980px)
+	.untHeaderContent img
+		height 100%
+		width 100%
+
+@media screen and (max-width:450px)
+	.untLeftContent, .untRightContent
+		float none
+		width 100%
+		
