@@ -81,7 +81,7 @@
                 content: 'Boton Sin Imagen',
                 click: function() {
                     $.untInputWin({
-                        title: 'Titulo',
+                        title: 'Entrando',
                         content: 'Contenido'
                     })
                 }

@@ -4,7 +4,7 @@
  * @author      JpBaena13
  */
 ;(function($, undefined) {
-    
+
     $.fn.untInputMsg = function(options) {
         var defaults = {
             content: '',
@@ -73,13 +73,9 @@
 
     $.untInputWin = function(options) {
         var defaults = {
-            title: i18n.alert,
             content: '',
             params: '',
-            header: true,
-            footer: true,
             btnCancel: false,
-            btnAccept: true,
             width: '300',
             height: 'auto',
             clickCancel: function() {},
@@ -87,18 +83,6 @@
         }
 
         var opts = $.extend(defaults, options)
-        
-        // Cierra la ventana con la tecla ESC
-        if(typeof documentKeydownLoaded == "undefined") {
-            documentKeydownLoaded = true
-            $(document).keydown(function(e){
-                if($('.untWin').length != 0){
-                    if (e.which == 27){
-                        untInputWinRemove()
-                    }
-                }
-            });
-        }
         
         //Cargando el contenido dinamicamente si opts.content es una URL
         if (isURL(opts.content)) {
@@ -125,15 +109,9 @@
                              </div>\n\
                           </div>')
         
-        if (!opts.header)
+        if (!opts.title)
             $('.untWinHeader').last().hide()
-        
-        if (!opts.footer)
-            $('.untWinFooter').last().hide()
 
-        if (!opts.btnAccept)
-            $('.btnWinAccept').last().hide()
-        
         $('.btnWinAccept').last().untInputBtn({
             content: i18n.accept,
             click: function() {                
@@ -154,22 +132,48 @@
         
         $('.untWin').last().css({
             width: opts.width,
-            height: opts.height,
-            left: -$('.untWin').last().outerWidth(),
-            top: ($(window).height() - $('.untWin').last().outerHeight())/2 + $(window).scrollTop(),
+            height: opts.height
         })          
         
         untInputWinCenter()
     }
+
+    // --- Eventos de cambio de pantalla y tecla presionada
+    $(window).on('resize', function() {
+        untInputWinCenter()
+    })
+
+    $(document).on('keydown', function(e) {
+        if (e.which == 27) {
+            if($('.untWin').length != 0) {
+                untInputWinRemove()
+            }
+        }
+    });
+
+    /**
+     * Borrar los elementos de una ventana
+     */
+    function untInputWinRemove() {
+        var win = $('.untWin').last()
+
+        win.css({ top: -win.outerHeight() });
+
+        if(!Modernizr.csstransitions) { 
+            $('.untWinBG').last().remove()
+            win.remove()
+            return
+        }
+
+        setTimeout(function() {
+            $('.untWinBG').last().remove()
+            win.remove()
+        }, 1000)
+    }
 })(jQuery)
 
-
-$(window).on('resize', function() {
-    untInputWinCenter()
-})
-
 /**
- * Permite centrar un untInputWin
+ * Permite centrar un untInputWin (Acceso público)
  */
 function untInputWinCenter() {
     var wDoc = $(document).width()
@@ -182,28 +186,6 @@ function untInputWinCenter() {
 
     $('.untWin').css({
         left: ($(window).width() - $('.untWin').last().outerWidth())/2,
-        top: ($(window).height() - $('.untWin').last().outerHeight())/2 + $(window).scrollTop(),
-        transition: 'all 1s ease'
+        top: ($(window).height() - $('.untWin').last().outerHeight())/2 + $(window).scrollTop()
     });
-}
-
-/**
- * Permite esconder la última ventana
- */
-function untInputWinHide() {
-    $('.untWin').last().css({
-        top: -$('.untWin').last().outerHeight()
-    });
-}
-
-/**
- * Borrar los elementos de una ventana
- */
-function untInputWinRemove() {
-    untInputWinHide()
-
-    setTimeout(function() {
-        $('.untWinBG').last().remove()
-        $('.untWin').last().remove()
-    }, 1000)
 }
