@@ -18,22 +18,22 @@
 <!-- Importando librerías javascript -->
     <!--Librería JQuery standard-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/<?php echo WEBROOT_URL ?>js/lib/jquery/jquery-1.9.0.min.js"><\/script>')</script>
+    <script>window.jQuery || document.write('<script src="/<?php echo WEBROOT_URL ?>js/lib/jquery-1.9.0.min.js"><\/script>')</script>
 
     <!--Librería JQuery UI-->
     <script type="text/javascript" src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
     
     <!--Librería JQuery QTIP-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery/jquery.qtip.min.js"></script>
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.qtip.min.js"></script>
 
     <!--Librería plugin JQuery para cookies-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.cookie.min.js"></script>
 
     <!--Librería plugin JQuery para Scrollpane-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery/jquery.jscrollpane.min.js"></script>
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.jscrollpane.min.js"></script>
 
     <!--Librería plugin JQuery para mousewheel-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.mousewheel.min.js"></script>
 
     <!--Librería Modernizr -->
     <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/modernizr.min.js"></script>

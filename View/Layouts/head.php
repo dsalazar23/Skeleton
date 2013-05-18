@@ -24,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.8.21/themes/base/jquery-ui.css" media="all">
 
     <!-- Stylesheet para JQuery QTIP-->
-    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/lib/jquery/jquery.qtip.min.css" />
+    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/lib/jquery.qtip.min.css" />
 
     <!--Stylesheet por Defecto-->
     <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/main.css" media="all" />

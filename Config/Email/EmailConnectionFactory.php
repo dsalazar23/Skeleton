@@ -9,7 +9,8 @@
  * @since       PHP 5
  */
 
-include_once("Mail.php");
+if (class_exists('Mail'))
+    include_once("Mail.php");
 
 class EmailConnectionFactory {
 

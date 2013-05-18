@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>Mi Sitio</title>
+        <title>Skeleton</title>
 
         <!-- Importando las cabeceras por defecto-->
         <?php require VIEW . 'Layouts' . DS . 'head.php'; ?>
