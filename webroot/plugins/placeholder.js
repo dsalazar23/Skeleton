@@ -16,13 +16,15 @@
             pressEnter: function() { }
 		}
 
-		var opts = $.extend({}, defaults, options);
-
 		return this.each(function(i) {
-			var $this = $(this)
+			var opts = $.extend({}, defaults, options),
+				$this = $(this)
 			
 			if (typeof(Modernizr) != 'undefined' && Modernizr.input.placeholder) {
-				$this.prop('placeholder', opts.text);
+				
+				if ($this.attr('placeholder') === '') {
+					$this.attr('placeholder', opts.text);
+				}
 
 				if (opts.autoResize)
                     $this.autoResize(opts)
@@ -32,6 +34,11 @@
 
 			//Declaración de Funciones
 			var _init = function() {
+				
+				if ($this.attr('placeholder') != '') {
+					opts.text = $this.attr('placeholder')
+				}
+
 				if ($this.val().trim() == '') {
 	                $this.val(opts.text);
                     $this.css('color', opts.color_blur);
