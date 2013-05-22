@@ -64,10 +64,6 @@
             <?php require VIEW . 'Layouts' . DS . 'footer.php'; ?>
         </div>
         
-        <!--Plugin-->
-        <script type="text/javascript" src="../untInput.js"></script>
-        
-        
         <script type="text/javascript">
             $('.abrir').untInputBtn({
                 content: 'Boton',

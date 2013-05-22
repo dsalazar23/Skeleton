@@ -17,35 +17,14 @@
 
 <!-- Importando librerías javascript -->
     <!--Librería JQuery standard-->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/<?php echo WEBROOT_URL ?>js/lib/jquery-1.9.0.min.js"><\/script>')</script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/<?php echo WEBROOT_URL ?>js/lib/jquery-1.9.1.min.js"><\/script>')</script>
 
     <!--Librería JQuery UI-->
-    <script type="text/javascript" src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
     
-    <!--Librería JQuery QTIP-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.qtip.min.js"></script>
+    <!--Librería JS que incluye: [jquery.qtip, jquery.cookie, jquery.jscrollpane, jquery.mousewheel, modernizr]-->
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/vendors.min.js"></script>
 
-    <!--Librería plugin JQuery para cookies-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.cookie.min.js"></script>
-
-    <!--Librería plugin JQuery para Scrollpane-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.jscrollpane.min.js"></script>
-
-    <!--Librería plugin JQuery para mousewheel-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/jquery.mousewheel.min.js"></script>
-
-    <!--Librería Modernizr -->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/modernizr.min.js"></script>
-
-    <!-- Funciones para la restricción de texto-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL?>js/permissionsKeyPress.js"></script>
-
-    <!--Librería JS que se carga por defecto al inicio de toda solicitud-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/bootstrap.js"></script>
-
-    <!--Plugin JQuery para aplicar Placeholder sobre los campos textuales-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>plugins/placeholder.js"></script>
-    
-    <!--Plugin JQuery para creación de Botones, mensajes y Ventanas emergentes-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>plugins/untInput.js"></script>
+    <!--Librería JS que incluye: [bootstrap.js, permissionsKeyPress.js, placeholder.js, untInput.js]-->
+    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/main.min.js"></script>

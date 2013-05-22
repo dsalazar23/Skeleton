@@ -136,10 +136,13 @@
     $smarty->compile_dir  = dirname(SMARTY_DIR) . DS . 'templates_c' . DS;
     $smarty->config_dir   = dirname(SMARTY_DIR) . DS . 'configs' . DS;
     $smarty->cache_dir    = dirname(SMARTY_DIR) . DS . 'cache' . DS;
-    
-    include_once(LIB . 'FactoryDAO.class.php');
-    require_once(LIB . 'i18n.class.php');
-    
-    include_once INCLD . 'includeDAO.php';
+
+    if (file_exists(LIB . 'FactoryDAO.class.php'))
+        include_once LIB . 'FactoryDAO.class.php';
+
+    if (file_exists(INCLD . 'includeDAO.php'))
+        include_once INCLD . 'includeDAO.php';
+
+    require_once LIB . 'i18n.class.php';
     require_once INCLD . 'functions.php';
 ?>
