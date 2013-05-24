@@ -8,7 +8,7 @@
 	$.fn.placeholder = function(options) {
 
 		var defaults = {
-			text: 'Nombre del campo',
+			text: 'Ingrese texto',
 			color_focus: '#000',
             color_blur: '#999',
             valid: false, // Este atributo genera una dependencia con jquery.validate
@@ -21,8 +21,7 @@
 				$this = $(this)
 			
 			if (typeof(Modernizr) != 'undefined' && Modernizr.input.placeholder) {
-				
-				if ($this.attr('placeholder') === '') {
+				if ($this.attr('placeholder') === undefined || $this.attr('placeholder') === '') {					
 					$this.attr('placeholder', opts.text);
 				}
 
@@ -39,7 +38,7 @@
 					opts.text = $this.attr('placeholder')
 				}
 
-				if ($this.val().trim() == '') {
+				if ($.trim($this.val()) == '') {
 	                $this.val(opts.text);
                     $this.css('color', opts.color_blur);
 
@@ -52,19 +51,19 @@
 	            }
 			},
 			_focus = function() {
-				if ($this.val().trim() == opts.text) {
+				if ($.trim($this.val()) == opts.text) {
                     $this.val('');
                     $this.css('color', opts.color_focus);
                 }
 			},
 			_blur = function() {
-				if ($(this).val().trim() == '' || $(this).val().trim() == opts.text) {
+				if ($.trim($this.val()) == '' || $.trim($this.val()) == opts.text) {
                     if (opts.valid) {
-                        $(this).val('');
-                        $(this).valid();
+                        $this.val('');
+                        $this.valid();
                     }
 
-                    $(this).val(opts.text);
+                    $this.val(opts.text);
                     $this.css('color', opts.color_blur);
                 }
 			},
@@ -79,28 +78,16 @@
                 }
 
                 return true
-			},
-			_keydown = function(e) {
-				if (e.which == 8) {
-                    if ($this.val().trim() == opts.text) {
-                        $this.val('');
-                        $this.css('color', opts.color_focus);
-                    }
-                }
-
-                return true;
-			};
+			}
 
 			if (opts.autoResize)
                     $this.autoResize(opts)
 
+            _init();
             $this.on('blur', _blur)
 			$this.on('keypress', _keypress)
-
-			_init();
 			$this.on('focus', _focus)
-			$this.on('keydown', _keydown)
-        })
+        });
 	}
 
 	$.fn.extend({
@@ -189,3 +176,8 @@
 		}
 	})
 })(jQuery);
+
+//Apicando Placeholder a todos los elementos que contengan esta propiedad
+$(function(){
+	$('[placeholder]').placeholder();
+})

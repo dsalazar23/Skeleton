@@ -3,9 +3,16 @@
  * @subpackage  css
  * @author      JpBaena13
  */
+prefix(prop, args)
+    -webkit-{prop} args
+    -moz-{prop} args
+    -ms-{prop} args
+    -o-{prop} args
+    {prop} args
 
 html, body
 	font-size 16px
+	height 100%
 	
 /*** SKELETON***/
 .untHeaderWrapper, .untMainWrapper, .untFooterWrapper
@@ -23,7 +30,7 @@ html, body
 	margin-top 20px
 
 .untMainContent
-	overflow hidden
+	overflow auto
 
 .untFooterWrapper
 	background-color #373737
@@ -35,7 +42,7 @@ html, body
 .untLeftContent, .untRightContent
 	background #eee
 	border thin solid #ccc
-	box-sizing border-box
+	prefix(box-sizing, border-box)
 	float left
 	height auto
 	min-height 200px
