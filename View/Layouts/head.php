@@ -23,10 +23,7 @@
     <!-- Stylesheet para JQuery UI-->
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.min.css" media="all">
 
-    <!-- Stylesheet para JQuery QTIP-->
-    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/lib/jquery.qtip.min.css" />
-
-    <!--Stylesheet por Defecto-->
+    <!--Stylesheet por Defecto, contiene: [normalize, jquery.jscrollpane, jquery.qtip, defualt]-->
     <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/main.css" media="all" />
 
     <!-- Google Analytics: cambiar UA-XXXXX-X por el ID del sitio. -->

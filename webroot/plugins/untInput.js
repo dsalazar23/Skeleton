@@ -1,4 +1,4 @@
-/**
+/*!
  * JQuery Messages and Buttons Plug-in 0.1
  *
  * @author      JpBaena13

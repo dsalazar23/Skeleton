@@ -1,4 +1,4 @@
-/**
+/*!
  * JQuery Placeholder Plug-in 0.1
  * 
  * @author      JpBaena13
