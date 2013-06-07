@@ -28,3 +28,11 @@
 
     <!--Librería JS que incluye: [bootstrap.js, permissionsKeyPress.js, placeholder.js, untInput.js]-->
     <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/main.min.js"></script>
+
+    <!-- Google Analytics: cambiar UA-XXXXX-X por el ID del sitio. -->
+    <script>
+        // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+        // (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        // g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+        // s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>

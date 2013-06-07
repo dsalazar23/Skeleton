@@ -25,11 +25,3 @@
 
     <!--Stylesheet por Defecto, contiene: [normalize, jquery.jscrollpane, jquery.qtip, defualt]-->
     <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/main.css" media="all" />
-
-    <!-- Google Analytics: cambiar UA-XXXXX-X por el ID del sitio. -->
-    <script>
-        // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-        // (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-        // g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-        // s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
