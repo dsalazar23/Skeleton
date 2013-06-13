@@ -5,7 +5,3 @@
  * @subpackage  js
  * @author      JpBaena13
  */
-
-$(document).on('ready', function() {
-    
-});

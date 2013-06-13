@@ -1,3 +1,8 @@
+v0.1.1:
+	date: 2013-06-13
+	- Se úbico Google Analytics en en Footer
+	- Se organizo el orden de main.styl
+	- Se suprimió evento ready de document
 v0.1.0:
   date: 2013-06-01
   changes:
