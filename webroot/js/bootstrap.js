@@ -15,7 +15,7 @@
 /*
  * Ruta relativa del directorio webroot del sitio
  */
-    var ROOT_URL = PRJCT_NAME + '/'
+    var ROOT_URL = (PRJCT_NAME == '') ? '/' : '/' + PRJCT_NAME + '/'
 
 /*
  * Ruta relativa del directorio webroot del sitio

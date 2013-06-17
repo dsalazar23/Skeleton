@@ -214,6 +214,10 @@ AddDefaultCharset utf-8
   # Options +SymLinksIfOwnerMatch
     RewriteEngine On
   # RewriteBase /
+
+    RewriteRule ^([a-zA-Z]+)$ /Skeleton/index.php?page=$1
+    RewriteRule ^p/([a-zA-Z]+)$ /Skeleton/webroot/plugins/$1
+
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}\.php -f
     RewriteRule ^(.*)$ $1.php

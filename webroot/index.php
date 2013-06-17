@@ -17,5 +17,5 @@
         exit();
     }
     
-    require APP_VIEW . 'home.php';
+    require APP_VIEW . $page . '.php';
 ?>

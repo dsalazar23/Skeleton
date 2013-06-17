@@ -102,7 +102,10 @@
  * Ruta relativa al directorio raiz del sitio
  */
     if (!defined('ROOT_URL')) {
-        define('ROOT_URL', PRJCT_NAME . '/');
+        if (PRJCT_NAME == '')
+            define('ROOT_URL', '/');
+        else
+            define('ROOT_URL', '/' . PRJCT_NAME . '/');
     }
 
 /**

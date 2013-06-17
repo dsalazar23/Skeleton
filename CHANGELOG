@@ -1,3 +1,9 @@
+v0.1.2
+	date: 2013-06-17
+	- Cambios en la constante PRJCT_NAME de los bootstrap
+	- Se añade mejora al plugin untInput para la función untInputWin
+	- Cambiando index.php para que reciba todas las peticiones a las vistas
+	
 v0.1.1:
 	date: 2013-06-13
 	- Se úbico Google Analytics en en Footer

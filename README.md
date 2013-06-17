@@ -38,6 +38,12 @@ en `NOMBRE_DEL_PROYECTO` por el nombre real, para los 3 archivos:
 ```htaccess
 ErrorDocument 404 /NOMBRE_DEL_PROYECTO/View/Errors/404.html
 ```
+```htaccess
+RewriteRule ^([a-zA-Z]+)$ /NOMBRE_DEL_PROYECTO/index.php?page=$1
+```
+```htaccess
+RewriteRule ^p/([a-zA-Z]+)$ /NOMBRE_DEL_PROYECTO/webroot/plugins/$1
+```
 
 
 ###Para la instalacion de plugin's corra los siguiente comandos:

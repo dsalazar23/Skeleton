@@ -17,11 +17,11 @@
 <meta name="description" content="">
 
 <!-- Permite colocar una imagen en la barra de direcciones.-->
-    <link rel="shortcut icon" href="/<?php echo WEBROOT_URL ?>favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="<?php echo WEBROOT_URL ?>favicon.ico" type="image/x-icon"/>
 
 <!-- Importando archivos Stylesheet-->
     <!-- Stylesheet para JQuery UI-->
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.min.css" media="all">
 
     <!--Stylesheet por Defecto, contiene: [normalize, jquery.jscrollpane, jquery.qtip, defualt]-->
-    <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/main.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="<?php echo WEBROOT_URL ?>css/main.css" media="all" />

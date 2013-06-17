@@ -18,16 +18,16 @@
 <!-- Importando librerías javascript -->
     <!--Librería JQuery standard-->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/<?php echo WEBROOT_URL ?>js/lib/jquery-1.9.1.min.js"><\/script>')</script>
+    <script>window.jQuery || document.write('<script src="<?php echo WEBROOT_URL ?>js/lib/jquery-1.9.1.min.js"><\/script>')</script>
 
     <!--Librería JQuery UI-->
     <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
     
     <!--Librería JS que incluye: [jquery.qtip, jquery.cookie, jquery.jscrollpane, jquery.mousewheel, modernizr]-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/lib/vendors.min.js"></script>
+    <script type="text/javascript" src="<?php echo WEBROOT_URL ?>js/lib/vendors.min.js"></script>
 
     <!--Librería JS que incluye: [bootstrap.js, permissionsKeyPress.js, placeholder.js, untInput.js]-->
-    <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/main.min.js"></script>
+    <script type="text/javascript" src="<?php echo WEBROOT_URL ?>js/main.min.js"></script>
 
     <!-- Google Analytics: cambiar UA-XXXXX-X por el ID del sitio. -->
     <script>

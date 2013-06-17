@@ -12,8 +12,9 @@
             type: 'Ok',
         }
 
+        var opts = $.extend(defaults, options)
+
         return this.each(function() {
-            var opts = $.extend(defaults, options)
 
             var $this = $(this)
             $this.css('display', 'none')
@@ -46,8 +47,9 @@
             content: 'Button'
         }
 
+        var opts = $.extend(defaults, options)
+
         return this.each(function() {
-            var opts = $.extend(defaults, options)
             var $this = $(this)
 
             $this.html('<div class="untBtnIcon"></div>\n\
@@ -81,6 +83,9 @@
             clickCancel: function() {},
             clickAccept: function() {}
         }
+
+        if (typeof(options) != 'object')
+            options = {content: options}
 
         var opts = $.extend(defaults, options)
         

@@ -30,6 +30,12 @@
         trigger_error('Error al cargar el Bootstrap', E_USER_ERROR);
         exit();
     }
+
+    $page = 'home';
+
+    if (sizeof($_GET) != 0) {
+        $page = $_GET['page'];    
+    }
     
     require WEBROOT . 'index.php';
 ?>

@@ -13,13 +13,13 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>Skeleton</title>
+        <title><?php echo PRJCT_NAME ?></title>
 
         <!-- Importando las cabeceras por defecto-->
         <?php require VIEW . 'Layouts' . DS . 'head.php'; ?>
 
         <!--Stylesheet para index-->
-        <link rel="stylesheet" type="text/css" href="/<?php echo WEBROOT_URL ?>css/home.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="<?php echo WEBROOT_URL ?>css/home.css" media="screen" />
     </head>
 
     <body>
@@ -33,7 +33,7 @@
 
         <header class="untHeaderWrapper">
             <div class="untHeaderContent">
-                <img src="/<?php echo WEBROOT_URL ?>images/default/header.png" alt="Sistema de Bibliotecas" width="980px" height="120px"/>
+                <img src="<?php echo WEBROOT_URL ?>images/default/header.png" alt="Sistema de Bibliotecas" width="980px" height="120px"/>
             </div>
         </header>
 
@@ -62,6 +62,6 @@
         </footer>
 
         <!--Script para esta página-->
-        <script type="text/javascript" src="/<?php echo WEBROOT_URL ?>js/home.js"></script>
+        <script type="text/javascript" src="<?php echo WEBROOT_URL ?>js/home.js"></script>
     </body>
 </html>
