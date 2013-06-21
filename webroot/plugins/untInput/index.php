@@ -45,8 +45,8 @@
                 
                 <br/><br/>
 
-                <button class="untBtnSilver abrir"></button>
-                <button class="untBtnSilver two"></button>
+                <button class="untBtn abrir">Abrir</button>
+                <button class="untBtn two">Mostrar Mensaje</button>
 
                 <br/><br/>
 
@@ -65,22 +65,15 @@
         </div>
         
         <script type="text/javascript">
-            $('.abrir').untInputBtn({
-                content: 'Boton',
-                icon: 'images/engine.png',
-                click: function(){
-                    $('.pp').show()
-                }
+            $('.abrir').click(function(){
+                $('.pp').show()
             })
 
-            $('.two').untInputBtn({
-                content: 'Boton Sin Imagen',
-                click: function() {
-                    $.untInputWin({
-                        title: 'Entrando',
-                        content: 'Contenido'
-                    })
-                }
+            $('.two').click(function() {
+                $.untInputWin({
+                    title: 'Entrando',
+                    content: 'Contenido'
+                })
             })
 
             $('#me').untInputMsg({

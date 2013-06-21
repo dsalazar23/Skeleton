@@ -53,6 +53,11 @@
                     ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, 
                     feugiat a.
                 </div>
+
+                <div style="text-align: center">
+                    <input type="button" value="Click Skeleton" class="untBtn">
+                </div>
+
             </div> <!-- Fin untMainContent -->
         </div> <!-- Fin untMainWrapper -->
 
@@ -63,5 +68,10 @@
 
         <!--Script para esta página-->
         <script type="text/javascript" src="<?php echo WEBROOT_URL ?>js/home.js"></script>
+        <script>
+            $('input').on('click', function(){
+                $.untInputWin('Skeleton es una librería PHP que te permite comenzar el desarrollo de aplicaciones rapidamente')
+            })
+        </script>
     </body>
 </html>

@@ -42,7 +42,7 @@
  * tiene configurado ninguno, por defecto selecciona es_ES
  */
     if (!$.cookie(PRJCT_NAME + '.lang'))
-        $.cookie(PRJCT_NAME + '.lang', 'es_ES', { path: '/' + PRJCT_NAME });
+        $.cookie(PRJCT_NAME + '.lang', 'es_ES', { path: PRJCT_NAME });
     
     chooseLang($.cookie(PRJCT_NAME + '.lang'));
     
@@ -64,8 +64,8 @@
             lang = 'es_ES'
         }
         
-        $.cookie(PRJCT_NAME + '.lang', lang, { path: '/' + PRJCT_NAME });
-        echo("<script type='text/javascript' src='/" + WEBROOT_URL + "locale/" + lang + ".js'></script>");
+        $.cookie(PRJCT_NAME + '.lang', lang, { path: PRJCT_NAME });
+        echo("<script type='text/javascript' src='" + WEBROOT_URL + "locale/" + lang + ".js'></script>");
     }
     
 /*

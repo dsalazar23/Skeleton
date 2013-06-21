@@ -42,37 +42,6 @@
         });
     }
 
-    $.fn.untInputBtn = function(options) {
-        var defaults = {
-            content: 'Button'
-        }
-
-        var opts = $.extend(defaults, options)
-
-        return this.each(function() {
-            var $this = $(this)
-
-            $this.html('<div class="untBtnIcon"></div>\n\
-                        <div class="untBtnContent">' + opts.content + '</div>')
-
-            $this.addClass('untBtn')
-
-             // Inserta el tag img si el usuario ingreso una URL de imagen
-            if (opts.icon) {
-                $this.children('.untBtnIcon')
-                    .html('<img src="' + opts.icon + '"/>')
-                    .css('display', 'inline-block')
-            }
-
-            // Ejecuta la función clic ingresada por el programador.
-            if (opts.click) {
-                $this.click(function() {
-                    opts.click()
-                })
-            }
-        });
-    }
-
     $.untInputWin = function(options) {
         var defaults = {
             content: '',
@@ -109,30 +78,27 @@
                               <div class="untWinHeader">' + opts.title + '</div>\n\
                               <div class="untWinContent">' + opts.content + '</div>\n\
                               <div class="untWinFooter">\n\
-                                 <button class="btnWinAccept untBtnSilver"></button>\n\
-                                 <button class="btnWinCancel untBtnGold"></button>\n\
+                                 <button class="btnWinAccept untBtn">' + i18n.accept + '</button>\n\
+                                 <button class="btnWinCancel untBtn">' + i18n.cancel + '</button>\n\
                              </div>\n\
                           </div>')
         
         if (!opts.title)
             $('.untWinHeader').last().hide()
 
-        $('.btnWinAccept').last().untInputBtn({
-            content: i18n.accept,
-            click: function() {                
-                opts.clickAccept()
-                untInputWinRemove()
-            }
-        });
+        $('.btnWinAccept').on('click', function(){
+            opts.clickAccept()
+            untInputWinRemove()
+        })
 
         if (opts.btnCancel) {
-            $('.btnWinCancel').last().untInputBtn({
-                content: i18n.cancel,
-                click: function() {
-                    opts.clickCancel()
-                    untInputWinRemove()
-                }
-            }).show()
+            console.log('a')
+            $('.btnWinCancel').on('click', function(){
+                opts.cancelAccept()
+                untInputWinRemove()
+            })
+        } else {
+            $('.btnWinCancel').hide()
         }
         
         $('.untWin').last().css({
