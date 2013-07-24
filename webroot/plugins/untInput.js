@@ -46,11 +46,12 @@
         var defaults = {
             content: '',
             params: '',
+            btnAccept: true,
             btnCancel: false,
-            width: '300',
+            width: 'auto',
             height: 'auto',
-            clickCancel: function() {},
-            clickAccept: function() {}
+            clickCancel: function() { return true; },
+            clickAccept: function() { return true; }
         }
 
         if (typeof(options) != 'object')
@@ -86,19 +87,26 @@
         if (!opts.title)
             $('.untWinHeader').last().hide()
 
-        $('.btnWinAccept').on('click', function(){
-            opts.clickAccept()
-            untInputWinRemove()
-        })
-
-        if (opts.btnCancel) {
-            console.log('a')
-            $('.btnWinCancel').on('click', function(){
-                opts.cancelAccept()
-                untInputWinRemove()
+        if (opts.btnAccept) {
+            $('.btnWinAccept').last().on('click', function(){
+                if (opts.clickAccept())
+                    untInputWinRemove()
             })
         } else {
-            $('.btnWinCancel').hide()
+            $('.btnWinAccept').last().hide()
+        }
+
+        if (opts.btnCancel) {
+            $('.btnWinCancel').last().on('click', function(){
+                if(opts.clickCancel())
+                    untInputWinRemove()
+            })
+        } else {
+            $('.btnWinCancel').last().hide()
+        }
+
+        if (!opts.btnAccept && !opts.btnCancel) {
+            $('.untWinFooter').last().hide();
         }
         
         $('.untWin').last().css({

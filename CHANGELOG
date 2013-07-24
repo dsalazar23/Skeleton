@@ -1,3 +1,11 @@
+v0.1.4
+	date:
+	- Se cambia función mysql_escape_string a mysql_real_escape_string (para PHP 5.5.0 y superior) en SqlQuery.class.php*
+	- Se corrige error en Plugin untInputWin
+	- Se agregan estilos en untInputWin.styl
+	- Se cambia en DataAccessGenerate.php el nombre de archivo "IncludeDao.php" => "IncludeDAO.php"
+	- Se agrega [QSA] en reglas rewrite en arvhivo .htaccess
+
 v0.1.3
 	date: 2013-06-21
 	- Se implementa estilos para botones
@@ -15,6 +23,7 @@ v0.1.1:
 	- Se úbico Google Analytics en en Footer
 	- Se organizo el orden de main.styl
 	- Se suprimió evento ready de document
+	
 v0.1.0:
   date: 2013-06-01
   changes:

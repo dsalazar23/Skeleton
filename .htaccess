@@ -215,7 +215,7 @@ AddDefaultCharset utf-8
     RewriteEngine On
   # RewriteBase /
 
-    RewriteRule ^([a-zA-Z]+)$ /Skeleton/index.php?page=$1
+    RewriteRule ^([a-zA-Z]+)$ /Skeleton/index.php?page=$1 [QSA]
     RewriteRule ^p/([a-zA-Z]+)$ /Skeleton/webroot/plugins/$1
 
     RewriteCond %{REQUEST_FILENAME} !-d

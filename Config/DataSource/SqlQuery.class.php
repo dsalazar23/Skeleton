@@ -30,7 +30,7 @@ class SqlQuery {
      *        Valor a ser añadido.
      */
     public function setString($value) {
-        $value = mysql_escape_string($value);
+        $value = mysql_real_escape_string($value);
         $this->params[$this->idx++] = "'" . $value . "'";
     }
 
@@ -38,7 +38,7 @@ class SqlQuery {
      * @see setString($value)
      */
     public function set($value) {
-        $value = mysql_escape_string($value);
+        $value = mysql_real_escape_string($value);
         $this->params[$this->idx++] = "'" . $value . "'";
     }
     
@@ -48,7 +48,7 @@ class SqlQuery {
      * @see setString($value)
      */
     public function setValue($value) {
-        $value = mysql_escape_string($value);
+        $value = mysql_real_escape_string($value);
         $this->params[$this->idx++] = $value;
     }
 

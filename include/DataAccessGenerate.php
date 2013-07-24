@@ -542,7 +542,7 @@ require_once(LIB .'Template.class.php');
         $template = new Template(TEMPLATES . 'IncludeDao.tpl');
         $template->set('include', $str);
         $template->set('date', date("Y-m-d H:i"));
-        $template->write(INCLD . 'includeDao.php');
+        $template->write(INCLD . 'includeDAO.php');
     }
 
 /**
