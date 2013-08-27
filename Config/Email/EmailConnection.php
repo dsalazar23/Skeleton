@@ -34,7 +34,7 @@ class EmailConnection {
         
         $ret = $this->connection->send($recipients, $headers, $message); 
         if (PEAR::isError($ret)) {
-            throw new Exception($ret->getsMessage());
+            throw new Exception($ret->getMessage());
         }
     
         return $ret;

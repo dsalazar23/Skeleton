@@ -107,7 +107,6 @@ require_once(LIB .'Template.class.php');
             }
 
             $template->set('variables', $fields);
-            $template->set('date', date("Y-m-d H:i"));
             $template->write(DATA_ACCESS . 'DTO' . DS . $className . 'DTO.class.php');
         }
     }
@@ -222,7 +221,6 @@ require_once(LIB .'Template.class.php');
             $template->set('question_marks', $questionMarks);
             $template->set('parameter_setter', $parameterSetter);
             $template->set('read_row', $readRow);
-            $template->set('date', date("Y-m-d H:i"));
             $template->set('queryByFieldFunctions', $queryByField);
             $template->set('deleteByFieldFunctions', $deleteByField);
             $template->write(DATA_ACCESS . 'DAO' .DS . 'interfaces' . DS . 
@@ -265,8 +263,8 @@ require_once(LIB .'Template.class.php');
                     $pk_type = $tab[$j][1];
 
                 } else {
-                    $insertFields .= $tab[$j][0] . ", ";
-                    $updateFields .= $tab[$j][0] . " = ?, ";
+                    $insertFields .= '`' . $tab[$j][0] . '`' . ", ";
+                    $updateFields .= '`' . $tab[$j][0] . '`' . " = ?, ";
                     $questionMarks .= "?, ";            
                     $parameterSetter2 = '';
 
@@ -373,7 +371,6 @@ require_once(LIB .'Template.class.php');
             $template->set('question_marks', $questionMarks);
             $template->set('parameter_setter', $parameterSetter);
             $template->set('read_row', $readRow);
-            $template->set('date', date("Y-m-d H:i"));
             $template->set('queryByFieldFunctions', $queryByField);
             $template->set('deleteByFieldFunctions', $deleteByField);
             $template->write(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . 
@@ -403,7 +400,6 @@ require_once(LIB .'Template.class.php');
             $template->set('dao_class_sup_name', $classNameSup);
             $template->set('dao_class_name', $className);
             $template->set('table_name', $tableName);
-            $template->set('date', date("Y-m-d H:i"));
 
             $file = DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . $className . 'DAO.class.php';
 
@@ -466,7 +462,6 @@ require_once(LIB .'Template.class.php');
             $template->set('variables', $fields);
             $template->set('DTO_name', getVarName($tableName) . 'DTO');
             $template->set('constructor', $constructor);
-            $template->set('date', date("Y-m-d H:i"));
             $template->set('get_methods', $gets);
             $template->set('set_methods', $sets);
             $template->write(MODEL_CLASS_PATH . 'genModel' . DS . 'gen' . $className . '.class.php');
@@ -474,7 +469,6 @@ require_once(LIB .'Template.class.php');
             $template = new Template(TEMPLATES . 'ModelObjects.tpl');
             $template->set('domain_class_name', $className);
             $template->set('table_name', $tableName);
-            $template->set('date', date("Y-m-d H:i"));
 
             $file = MODEL_CLASS_PATH . $className . '.class.php';
 
@@ -510,7 +504,7 @@ require_once(LIB .'Template.class.php');
         }
         $template = new Template(TEMPLATES . 'FactoryDAO.tpl');
         $template->set('content', $str);
-            $template->set('date', date("Y-m-d H:i"));
+
         $template->write(LIB . 'FactoryDAO.class.php');
     }
 
@@ -539,9 +533,8 @@ require_once(LIB .'Template.class.php');
             $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . '" . $className . "MsDAO.class.php');\n";
         }
 
-        $template = new Template(TEMPLATES . 'IncludeDao.tpl');
+        $template = new Template(TEMPLATES . 'IncludeDAO.tpl');
         $template->set('include', $str);
-        $template->set('date', date("Y-m-d H:i"));
         $template->write(INCLD . 'includeDAO.php');
     }
 

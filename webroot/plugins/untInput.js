@@ -51,7 +51,8 @@
             width: 'auto',
             height: 'auto',
             clickCancel: function() { return true; },
-            clickAccept: function() { return true; }
+            clickAccept: function() { return true; },
+            onLoadContent: function() { }
         }
 
         if (typeof(options) != 'object')
@@ -89,7 +90,7 @@
 
         if (opts.btnAccept) {
             $('.btnWinAccept').last().on('click', function(){
-                if (opts.clickAccept())
+                if (opts.clickAccept() !== false)
                     untInputWinRemove()
             })
         } else {
@@ -98,7 +99,7 @@
 
         if (opts.btnCancel) {
             $('.btnWinCancel').last().on('click', function(){
-                if(opts.clickCancel())
+                if(opts.clickCancel() !== false)
                     untInputWinRemove()
             })
         } else {
@@ -114,7 +115,8 @@
             height: opts.height
         })          
         
-        untInputWinCenter()
+        untInputWinCenter();
+        opts.onLoadContent();
     }
 
     // --- Eventos de cambio de pantalla y tecla presionada
@@ -129,27 +131,7 @@
             }
         }
     });
-
-    /**
-     * Borrar los elementos de una ventana
-     */
-    function untInputWinRemove() {
-        var win = $('.untWin').last()
-
-        win.css({ top: -win.outerHeight() });
-
-        if(!Modernizr.csstransitions) { 
-            $('.untWinBG').last().remove()
-            win.remove()
-            return
-        }
-
-        setTimeout(function() {
-            $('.untWinBG').last().remove()
-            win.remove()
-        }, 1000)
-    }
-})(jQuery)
+})(jQuery);
 
 /**
  * Permite centrar un untInputWin (Acceso público)
@@ -158,13 +140,33 @@ function untInputWinCenter() {
     var wDoc = $(document).width()
     var hDoc = $(document).height()
 
-    $('.untWinBG').css({
+    $('.untWinBG').last().css({
         width: wDoc,
         height: hDoc
     })
 
-    $('.untWin').css({
+    $('.untWin').last().css({
         left: ($(window).width() - $('.untWin').last().outerWidth())/2,
         top: ($(window).height() - $('.untWin').last().outerHeight())/2 + $(window).scrollTop()
     });
+}
+
+/**
+ * Borrar los elementos de una ventana
+ */
+function untInputWinRemove() {
+    var win = $('.untWin').last()
+
+    win.css({ top: -win.outerHeight() });
+
+    if(!Modernizr.csstransitions) { 
+        $('.untWinBG').last().remove()
+        win.remove()
+        return
+    }
+
+    setTimeout(function() {
+        $('.untWinBG').last().remove()
+        win.remove()
+    }, 1000)
 }

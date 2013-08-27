@@ -31,11 +31,19 @@
         exit();
     }
 
-    $page = 'home';
+    require_once CONTROLLER . ('Auth.controller.php');
+    $auth = new AuthController();
 
-    if (sizeof($_GET) != 0) {
-        $page = $_GET['page'];    
+    $page = null;
+
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
     }
-    
-    require WEBROOT . 'index.php';
+
+    $auth->checkSession($page); //Valida permisos para acceder a la página solicitada.
+
+    // Garantizando entrada a unnotes
+    if (!include APP_VIEW . $page . '.php') {
+        header('Location: ' . ROOT_URL);
+    };
 ?>

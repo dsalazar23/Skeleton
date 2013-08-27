@@ -1,5 +1,14 @@
+v0.1.5
+	date: 2013-27-08
+	- Se permite campos con nombre igual a palabra reservada en MySQL anteponiendo comilla => "DataAccessGenerate.php"
+	- Se retira set(date) en Templates innecesario. Se corrige "IncludeDao.php" => DataAccessGenerate.php
+	- Se corrige método getMessage() => EmailConnection.php
+	- Se añade función onLoadContent() en plugin untInput
+	- Se elimina webroot/index.php
+	- Se implementa lógica de Authentication en index.php
+	- Se añade Auth.controller.php con lógica mínima de autenticación.
 v0.1.4
-	date:
+	date: 2013-07-24
 	- Se cambia función mysql_escape_string a mysql_real_escape_string (para PHP 5.5.0 y superior) en SqlQuery.class.php*
 	- Se corrige error en Plugin untInputWin
 	- Se agregan estilos en untInputWin.styl
