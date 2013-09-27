@@ -95,14 +95,14 @@ require_once(LIB .'Template.class.php');
                     $fields .= "\t/** " . $comment . " */\n";
                 }
                 if ($tab[$j][4] == '')
-                    $fields .= "\tvar $" . getVarNameWithS($tab[$j][0]) . ";\n\r";
+                    $fields .= "\tvar $" . getVarNameWithS($tab[$j][0]) . ";\n\r\n\r";
                 else {
                     if (is_numeric($tab[$j][4]))
                         $fields .= "\tvar $" . getVarNameWithS($tab[$j][0]) . 
-                            " = " . $tab[$j][4] . ";\n\r";
+                            " = " . $tab[$j][4] . ";\n\r\n\r";
                     else
                         $fields .= "\tvar $" . getVarNameWithS($tab[$j][0]) . 
-                            " = '" . $tab[$j][4] . "';\n\r";
+                            " = '" . $tab[$j][4] . "';\n\r\n\r";
                 }
             }
 
@@ -254,14 +254,13 @@ require_once(LIB .'Template.class.php');
             $pk = array();
             $queryByField = '';
             $deleteByField = '';
-            $pk_type = '';
+            $pk_type = array();
 
             for ($j = 0; $j < count($tab); $j++) {
                 if ($tab[$j][3] == 'PRI') {
                     $c = count($pk);
                     $pk[$c] = $tab[$j][0];
-                    $pk_type = $tab[$j][1];
-
+                    $pk_type[$c] = $tab[$j][1];
                 } else {
                     $insertFields .= '`' . $tab[$j][0] . '`' . ", ";
                     $updateFields .= '`' . $tab[$j][0] . '`' . " = ?, ";
@@ -342,12 +341,20 @@ require_once(LIB .'Template.class.php');
                 $insertFields2.=', ' . $pk[$z];
                 $s .= '$' . getVarNameWithS($pk[$z]);
                 $s2 .= $pk[$z] . ' = ? ';
-                $s3 .= '$sqlQuery->setNumber($' . getVarNameWithS($pk[$z]) . ');';
-                $s3 .= "\n\t";
-                $s4 .= '$sqlQuery->setNumber($' . getVarName($tableName) . 
-                        'DTO->' . getVarNameWithS($pk[$z]) . ');';
                 
-                $s4 .= "\n\t";
+                if (isColumnTypeNumber($pk_type[$z])) {
+                    $s3 .= '$sqlQuery->setNumber($' . getVarNameWithS($pk[$z]) . ');';
+                    $s3 .= "\n\t";
+                    $s4 .= '$sqlQuery->setNumber($' . getVarName($tableName) . 
+                            'DTO->' . getVarNameWithS($pk[$z]) . ');';
+                    $s4 .= "\n\t";
+                } else {
+                    $s3 .= '$sqlQuery->set($' . getVarNameWithS($pk[$z]) . ');';
+                    $s3 .= "\n\t";
+                    $s4 .= '$sqlQuery->set($' . getVarName($tableName) . 
+                            'DTO->' . getVarNameWithS($pk[$z]) . ');';
+                    $s4 .= "\n\t";
+                }
             }
 
             if ($s[0] == ',')

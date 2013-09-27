@@ -1,3 +1,8 @@
+v0.1.6.1
+	data: 2013-27-09
+	- Se organizó DataAccessGenerate para no generar problema con claves primarias no enteras (int)
+	- Se agregó función para leer archivos y sitios con curl.
+
 v0.1.6
 	date: 2013-27-08
 	- Se añadió archivo jquery-ui.styl

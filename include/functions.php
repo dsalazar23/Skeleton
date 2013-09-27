@@ -43,16 +43,16 @@ $i18n = i18n::init();
  *        Determina el modo en que desea imprimir el mensaje sobre archivo
  *
  */
-    function printLog($log, $flag = 1) {
+    function printLog($log, $flag = 1, $file = 'server.log') {
 
         if ($flag == 0) {
-            $fw = fopen(ROOT . 'tmp' . DS . 'server.log', "w");
+            $fw = fopen(ROOT . 'tmp' . DS . $file, "w");
             fwrite($fw, $log);
             fclose($fw);
             return;
         }
 
-        $fr = fopen(ROOT . 'tmp' . DS . 'server.log', "r");
+        $fr = fopen(ROOT . 'tmp' . DS . $file , "r");
         $ret = '';
         while (!feof($fr)) {
             $buffer = fgets($fr, 4096);
@@ -62,8 +62,7 @@ $i18n = i18n::init();
         fclose($fr);
 
         if ($flag == 2) {
-            $ret .= "\n\n**********************************************************************************************\n";
-            $ret .= "**********************************************************************************************\n\n" . $log;
+            $ret .= "\n" . $log;
         } else {
             if (empty ($ret))
                 $ret .= $log;
@@ -71,7 +70,7 @@ $i18n = i18n::init();
                 $ret .= "\n" . $log;
         }
 
-        $fw = fopen(ROOT . 'tmp' . DS . 'server.log', "w");
+        $fw = fopen(ROOT . 'tmp' . DS . $file, "w");
         fwrite($fw, $ret);
         fclose($fw);
     }
@@ -164,6 +163,8 @@ $i18n = i18n::init();
         }
 
         $aes = new AES($z, "CBC", $initialization_vector);
+
+        $strToDecrypt = base64_decode($strToDecrypt);
 
         return stripslashes($aes->decrypt($strToDecrypt));
     }
@@ -274,5 +275,31 @@ $i18n = i18n::init();
             return (strlen($text) <= $length + 2) ? $text : substr($text, 0, $length) . '...';
         }
     }
+
+
+/**
+ * Permite la lectura de un archivo remoto
+ * 
+ * @param  string $url URL del archivo a solicitar.
+ * 
+ * @return string Respuesta obtenida desde la URL especificada
+ */
+    function file_get($url) { 
+        if (strpos($url,'http://') !== FALSE) {
+            $fc = curl_init();  
+            curl_setopt($fc, CURLOPT_URL,$url); 
+            curl_setopt($fc, CURLOPT_RETURNTRANSFER,1); 
+            curl_setopt($fc, CURLOPT_HEADER,0); 
+            curl_setopt($fc, CURLOPT_VERBOSE,0);    
+            curl_setopt($fc, CURLOPT_SSL_VERIFYPEER,FALSE); 
+            curl_setopt($fc, CURLOPT_TIMEOUT,30);   
+            $res = curl_exec($fc);
+            curl_close($fc);
+        } 
+        else 
+            $res = file_get_contents($url);  
+        
+        return $res;  
+}
     
 ?>
