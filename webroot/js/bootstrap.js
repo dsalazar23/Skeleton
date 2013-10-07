@@ -266,3 +266,44 @@
 
         return h + ':' + m + ':' + s
     }
+
+/**
+ * Esta función permite visualizar una ventana que alerta sobre la falta de 
+ * una sesión de usuario activa, permitiendo redireccionar a la URL actual
+ * una vez el usuario se autentique.
+ * 
+ */    
+    function winNoSession() {
+        $('.untWin').remove();
+        $('.untWinBG').remove();
+        $.untInputWin({
+            title: i18n.noSession,
+            content: i18n.msgNoSession,
+            clickAccept: function() {
+                location.href = ROOT_URL + 'login?uri=' + encodeURIComponent(location.pathname + location.hash)
+            }
+        })
+    }
+
+/**
+ * Esta función permite la validación de los datos retornados en la funciones ajax especificado
+ * @param  string data Datos retornados por la función ajax ejectuada
+ */
+    function validateData(data, title, content) {
+        data = data.trim();
+
+        if (data == 'error') {
+            $.untInputWin({
+                title: title,
+                content: content
+            });
+            return false;
+        }
+
+        if (/<script>/.test(data)) {
+            $('body').append(data); // Ejecuta la función js
+            return false;
+        }
+
+        return data;
+    }

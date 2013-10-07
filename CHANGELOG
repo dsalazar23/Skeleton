@@ -1,17 +1,24 @@
+v0.1.7
+	date: 2013-10-07
+	- Se añadio función validateData() y WinNoSession() al bootstrap.js
+	- Se agregó funciones set<?>DTO y get<?>DTO en el template para la generación de los <Models>
+	- Se cambió la función getALL() de <Models> para retornar objeto concretos y no DTO's.
+	- Se añade librería jquery.validation.min.js
+
 v0.1.6.1
-	data: 2013-27-09
+	date: 2013-09-27
 	- Se organizó DataAccessGenerate para no generar problema con claves primarias no enteras (int)
 	- Se agregó función para leer archivos y sitios con curl.
 
 v0.1.6
-	date: 2013-27-08
+	date: 2013-08-27
 	- Se añadió archivo jquery-ui.styl
 	- Se modificó el archivo View/Layouts/head.php para incluir jquery-ui.styl
 	- Se añadio archivo jquery-ui.min.js
 	- Se modifico el archivo View/Layouts/footer.php para incluir librería jquery-ui.min.js
 	- Se añadieron metadatos en head.php
 v0.1.5
-	date: 2013-27-08
+	date: 2013-08-27
 	- Se permite campos con nombre igual a palabra reservada en MySQL anteponiendo comilla => "DataAccessGenerate.php"
 	- Se retira set(date) en Templates innecesario. Se corrige "IncludeDao.php" => DataAccessGenerate.php
 	- Se corrige método getMessage() => EmailConnection.php

@@ -21,6 +21,24 @@ class gen${domain_class_name} {
     }
 
     /**
+     * Cambia el objeto DTO de la clase por el especificado
+     *
+     * @param  ${domain_class_name}DTO $${DTO_name} DTO a modificar
+     */
+    public function set${domain_class_name}DTO($${DTO_name}) {
+        $this->${DTO_name} = $${DTO_name};
+    }
+
+    /**
+     * Retorna el objeto DTO de clase
+     *
+     * @return  ${domain_class_name}DTO $${DTO_name} DTO de clase.
+     */
+    public function get${domain_class_name}DTO() {
+        return $this->${DTO_name};
+    }
+
+    /**
      * Guarda el objeto ${domain_class_name} en la base de datos.
      */
     public function save() {
@@ -33,10 +51,22 @@ class gen${domain_class_name} {
     }
     
     /**
-     * Carga todos los registros de la tabla.
+     * Retorna un arreglo con todos lo objetos encontrados en la fuente de datos
+     *
+     * @return Array Arreglo con todos los objetos <${domain_class_name}>
      */
-    public function getAll() {
-        return FactoryDAO::get${domain_class_name}DAO()->queryAll();
+    public static function getAll() {
+         $${DTO_name}s = FactoryDAO::get${domain_class_name}DAO()->queryAll();
+
+         $arr = Array();
+
+         foreach ($${DTO_name}s as $${DTO_name} ) {
+            $object = new ${domain_class_name}();
+            $object->set${domain_class_name}DTO($${DTO_name});
+            array_push($arr, $object);
+         }
+
+         return $arr;
     }
     
     /**
