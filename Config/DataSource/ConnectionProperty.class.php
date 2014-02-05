@@ -12,7 +12,7 @@ class ConnectionProperty {
     private static $host = 'localhost';
     private static $user = 'root';
     private static $password = '';
-    private static $database = 'notas';
+    private static $database = 'skeleton';
 
     public static function getHost() {
         return ConnectionProperty::$host;

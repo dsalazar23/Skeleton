@@ -1,3 +1,16 @@
+v0.2
+	date 2014-02-04
+	- Se añadio formulario de autenticación página de inicio
+	- Se completó controlador de autenticación.
+	- Se añadió archivo webroot/ajax/login.php
+	- Se añadió archivo webroot/ajax/logout.php
+	- Se añadio reglas en .htaccess para /rq/$1 y /ax/$1
+	- Se agrego estilo por defecto para formulario
+	- Se agregó función en home.js para mostrar errores
+	- Se agregó función getInstance() en User.class.php
+	- Se añadió página de inicio con autenticación (index)
+	- Se agrego script SQL skeleton
+	
 v0.1.7
 	date: 2013-10-07
 	- Se añadio función validateData() y WinNoSession() al bootstrap.js

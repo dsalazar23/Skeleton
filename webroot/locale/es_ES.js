@@ -9,5 +9,7 @@
 var i18n = {
     accept 	: 'Aceptar',
     cancel 	: 'Cancelar',
-    alert	: 'Alerta'
+    alert	: 'Alerta',
+    errAuth : 'Usuario y/o Contraseña incorrectos',
+    errUserPassLogin: 'Intentente nuevamente'
 }

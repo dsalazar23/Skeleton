@@ -113,8 +113,8 @@ $i18n = i18n::init();
  *        Cadena de texto a encriptar.
  *
  */
-    function aesEncrypt($strToEncrypt, $key = 'unnotes2011&2306') {
-        $initialization_vector = 'U2n0N1o1t*e2s306';
+    function aesEncrypt($strToEncrypt, $key = 'skeleton2014') {
+        $initialization_vector = 'Sk3l3t0n*e2s306';
         $removeStr = array("@", "/", "-", "_", ".", " ");
 
         $z = str_replace($removeStr, "", $key);
@@ -147,8 +147,8 @@ $i18n = i18n::init();
  *        Cadena de texto a desencriptar.
  *
  */
-    function aesDecrypt($strToDecrypt, $key = 'unnotes2011&2306') {
-        $initialization_vector = 'U2n0N1o1t*e2s306';
+    function aesDecrypt($strToDecrypt, $key = 'skeleton2014') {
+        $initialization_vector = 'Sk3l3t0n*e2s306';
         $removeStr = array("@", "/", "-", "_", ".", " ");
 
         $z = str_replace($removeStr, "", $key);

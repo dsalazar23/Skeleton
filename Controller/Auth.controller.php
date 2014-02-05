@@ -8,12 +8,15 @@
  */
 
 class AuthController {
+
+    /** Instancia de usuario que guardará el usuario que desea autenticarse*/
+    private $user;
     
     /* Página de inicio para usuario sin autenticas*/
     public static $_PAGE_HOME = 'home';
 
     /* Página de inicio para usuario autenticados*/
-    public static $_PAGE_INIT = '';
+    public static $_PAGE_INIT = 'index';
 
      /** Arreglo de vistas que NO requieren sesión iniciada*/
     public static $_VIEWS_NO_SESSION = array('home');
@@ -27,20 +30,50 @@ class AuthController {
     function __construct() {
         session_start();
 
+        $this->user = new User();
     }
 
     /**
-     * Proceso de autenticación
+     * Proceso de autenticación de usuario
+     *
+     * @param User $user Si es diferente de null, significa que se está realizando
+     *             un auto-logueo desde la creación de cuenta.
+     * 
+     * @param string $uri Se configura con la uri a redireccionar cuando la sesión
+     *               de usuario es reactivada. Si $uri es igual
+     *               a true, se permite la continuación del llamado.
      */
-    public function login($session = false) {
+    public function login($user, $uri, $session = false) {
 
-        $_SESSION['app']     = PRJCT_NAME;
+        $this->user = $user;
+
+        if (is_numeric($this->user)) {
+            $error = ($this->user == -1) ? '' : 'error=' . $this->user;
+            $uri = ($uri == ROOT_URL) ? '' : '&uri=' . urlencode($uri);
+
+            header('Location: ' . ROOT_URL . '?' . $error . $uri);
+            exit();
+        }
+
+
+        $_SESSION['userId']     = $this->user->getId();
+        $_SESSION['username']   = $this->user->getUsername();
+        $_SESSION['fullname']   = $this->user->getFirstname() . ' ' . $this->user->getLastname();
+        
 
         // Cuando el usuario marco la casilla de 'recordarme'
         if ($session) {
-            $token = aesEncrypt($_SESSION['app']);
-            setcookie('token', $token, time() + 60*60*24*30, '/'); // 1 mes
+            $token = aesEncrypt($_SESSION['userId'] . '-' .$this->user->getUsername());
+            setcookie('token', $token, time() + 60*60*24*30, '/' . PRJCT_NAME); // 1 mes
         }
+
+        //Si $uri es <true> no redirecciona
+        if ($uri === true) {
+            return true;
+        }
+        
+        header('Location: ' . $uri);
+        exit();
     }
     
     
@@ -51,9 +84,11 @@ class AuthController {
     public function logout() {
 
         //Destruyendo variables de sesion
-        unset($_SESSION['app']);
+        unset($_SESSION['userId']);
+        unset($_SESSION['username']);
+        unset($_SESSION['fullname']);
         
-        setcookie('token', null, 0, '/');
+        setcookie('token', null, 0, '/' . PRJCT_NAME);
 
         session_destroy();
 
@@ -69,7 +104,7 @@ class AuthController {
      * @return boolean <true> si hay una sesión de usuario activa, <false> de lo contrario
      */
     public function hasSession($json = null) {
-        if (!isset($_SESSION['app'])) {
+        if (!isset($_SESSION['userId'])) {
             return $this->refreshSession($json);
         }
 
@@ -124,12 +159,16 @@ class AuthController {
 
             try {
                 $token = aesDecrypt($_COOKIE['token']);
+                $userId = $token[0];
+                $user = new User($userId);
 
-            } catch (Exception $exc) {
-                setcookie('token', null, 0, '/');
+            } catch (Exception $exc) {                
+                setcookie('token', null, 0, '/' . PRJCT_NAME);
+
+                $user = -1;
             }
             
-            return $this->login(true);
+            return $this->login($user, true);
             
         } else {
             if ($json === null)
@@ -144,7 +183,5 @@ class AuthController {
             exit();
         }
     }
-
-
 }
 ?>
