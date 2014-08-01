@@ -4,25 +4,31 @@
  * @author      JpBaena13
  */
 .untMsg
-	color #000
-	font-size 9pt
-	height auto
+	border-radius 0.5em 0 0.5em 0
+	font-size 14px
 	margin 10px
 	padding 10px
 	text-align left
+	text-shadow none
 	width auto
+
+.untMsgDelete
+	color #A03434
+	cursor pointer
+	float right
+
+	&:hover
+		color: #c33f3f
 
 .untMsgWrapper
 	display inline-block
 
 .untMsgTitle
-	font-size 10pt
 	font-weight bold
 	margin-bottom 5px
 
 .untMsgContent
 	display inline-block
-	letter-spacing -0.1px
 	vertical-align middle
 
 .untMsgIcon
@@ -34,12 +40,12 @@
 
 .untMsgErr
 	background-color #edd
-	border thin solid red
+	border thin solid #690D0D
 
 .untMsgOk
 	background-color #ded
-	border thin solid green
+	border thin solid #4E754E
 
 .untMsgWrng
-	background-color #f5efcf
-	border thin solid #ffdd00
+	background-color #FCEFD7
+	border thin solid #f5b143

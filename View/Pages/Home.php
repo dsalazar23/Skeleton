@@ -50,7 +50,11 @@
                             <div class="opts">
                                 <input id="session" name="session" type="checkbox" checked>
                                 <label for="session"><?php __('remember')?></label>
-                            </div>                            
+                            </div>
+
+                            <?php if (isset($_GET['uri'])) { ?>
+                                <input type="hidden" name="uri" value="<?php echo $_GET['uri']?>">
+                            <?php } ?>
                         </fieldset>
                     </form>
                 </div>

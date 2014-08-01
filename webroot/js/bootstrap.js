@@ -27,17 +27,6 @@
  */
     var API = ROOT_URL + 'API/'
 
-/**
- * Ruta ABSOLUTA al blob donde quedan guardadas las imagenes asociadas a los tableros (Cache CDN)
- */
-    var CDN_IMAGES = 'https://az641704.vo.msecnd.net/noteboard/'
-
-
-/**
- * Ruta ABSOLUTA al blob donde quedan guardadas los thumbails de previsualización (No cache)
- */
-    var BLOB_IMAGES = 'https://unnotestorage.blob.core.windows.net/noteboard/'
-
 
  /*
   * Selecciona el lenguaje configurado por el usuario, o por defecto <en_US>

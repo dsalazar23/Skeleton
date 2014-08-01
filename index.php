@@ -77,7 +77,7 @@
             if ($auth->hasSession())
                 header('Location:' . ROOT_URL);
             else
-                header('Location:' . ROOT_URL . 'Login?uri=' . urlencode($_SERVER['REQUEST_URI']));
+                header('Location:' . ROOT_URL . '?uri=' . urlencode($_SERVER['REQUEST_URI']));
             exit();
         }
 

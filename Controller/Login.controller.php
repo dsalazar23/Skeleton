@@ -36,7 +36,7 @@ class LoginController extends Controller {
         $uri      = isset($_POST['uri']) ? $_POST['uri'] : ROOT_URL;
 
         if ($userdata == '' || $password == '') {
-            header('Location: ' . ROOT_URL);
+            header('Location: ' . ROOT_URL . '?error=1');
             exit();
         }
 

@@ -18,12 +18,13 @@
 
             var $this = $(this)
             $this.css('display', 'none')
-            $this.html('<div class="untMsg">\n\
-                              <div class="untMsgIcon"></div>\n\
-                              <div class="untMsgWrapper">\n\
-                                 <div class="untMsgTitle">' + opts.title + '</div>\n\
-                                 <div class="untMsgContent">' + opts.content + '</div>\n\
-                              </div>\n\
+            $this.html('<div class="untMsg">\
+                              <div class="untMsgDelete icon-cancel-circle"></div>\
+                              <div class="untMsgIcon"></div>\
+                              <div class="untMsgWrapper">\
+                                 <div class="untMsgTitle">' + opts.title + '</div>\
+                                 <div class="untMsgContent">' + opts.content + '</div>\
+                              </div>\
                           </div>')
 
             var children = $this.children('.untMsg')
@@ -39,17 +40,26 @@
                     .html('<img src="' + opts.icon + '"/>')
                     .css('display', 'inline-block')
             }
+
+            if (opts.title == '')
+                $this.find('.untMsgTitle').remove();
+
+            $this.find('.untMsgDelete').on('click', function(){
+                $this.remove();
+            });
         });
     }
 
     $.untInputWin = function(options) {
         var defaults = {
             content: '',
-            params: '',
+            data: '',
             btnAccept: true,
             btnCancel: false,
             width: 'auto',
             height: 'auto',
+            maxWidth: '95%',
+            classes: '',
             clickCancel: function() { return true; },
             clickAccept: function() { return true; },
             onLoadContent: function() { }
@@ -62,9 +72,11 @@
         
         //Cargando el contenido dinamicamente si opts.content es una URL
         if (isURL(opts.content)) {
+            var exit = false;
+
             $.ajax ({
                 url: opts.content,
-                data: opts.params,
+                data: opts.data,
                 async: false,
                 success: function(data) {
                     if (isURL(data))
@@ -72,18 +84,23 @@
                     else
                         opts.content = data
                 }
+            }).error(function(data){
+                exit = true;
             });
-        }        
 
-        $('body').append('<div class="untWinBG"></div>\n\
-                          <div class="untWin">\n\
+            if (exit)
+                return;
+        }
+
+        $('body').append('<div class="untWinBG">\n\
+                          <div class="untWin ' + opts.classes + '">\n\
                               <div class="untWinHeader">' + opts.title + '</div>\n\
                               <div class="untWinContent">' + opts.content + '</div>\n\
                               <div class="untWinFooter">\n\
-                                 <button class="btnWinAccept untBtn">' + i18n.accept + '</button>\n\
+                                 <button class="btnWinAccept yellow untBtn">' + i18n.accept + '</button>\n\
                                  <button class="btnWinCancel untBtn">' + i18n.cancel + '</button>\n\
                              </div>\n\
-                          </div>')
+                          </div></div>');
         
         if (!opts.title)
             $('.untWinHeader').last().hide()
@@ -112,8 +129,14 @@
         
         $('.untWin').last().css({
             width: opts.width,
-            height: opts.height
-        })          
+            height: opts.height,
+            'max-width': opts.maxWidth
+        });
+
+        $('.untWinBG').last().on('click', function(e){
+            if ($(e.target).hasClass('untWinBG'))
+                untInputWinRemove();
+        });        
         
         untInputWinCenter();
         opts.onLoadContent();
@@ -125,7 +148,8 @@
     })
 
     $(document).on('keydown', function(e) {
-        if (e.which == 27) {
+        var key = e.which || e.keycode
+        if (key == 27) {
             if($('.untWin').length != 0) {
                 untInputWinRemove()
             }
@@ -137,36 +161,44 @@
  * Permite centrar un untInputWin (Acceso público)
  */
 function untInputWinCenter() {
-    var wDoc = $(document).width()
-    var hDoc = $(document).height()
+    var win = $(window)
+        ,untWin = $('.untWin').last()
+        ,wDoc = win.width()
+        ,hDoc = win.height()
+        ,top = (hDoc - untWin.outerHeight()) / 2;
+
+    if (top < 0)
+        top = 0;
 
     $('.untWinBG').last().css({
         width: wDoc,
         height: hDoc
-    })
+    });
 
-    $('.untWin').last().css({
-        left: ($(window).width() - $('.untWin').last().outerWidth())/2,
-        top: ($(window).height() - $('.untWin').last().outerHeight())/2 + $(window).scrollTop()
+    untWin.css({
+        top: top
     });
 }
 
 /**
  * Borrar los elementos de una ventana
  */
-function untInputWinRemove() {
-    var win = $('.untWin').last()
+function untInputWinRemove(all) {
+    var untWin = $('.untWin').last()
 
-    win.css({ top: -win.outerHeight() });
+    if (all)
+        untWin = $('.untWin');
 
-    if(!Modernizr.csstransitions) { 
-        $('.untWinBG').last().remove()
-        win.remove()
+    untWin.css({ top: -untWin.outerHeight() });
+
+    if(!Modernizr.csstransitions) {
+        $('.untWinBG').last().remove();
+        untWin.remove();
         return
     }
 
     setTimeout(function() {
         $('.untWinBG').last().remove()
-        win.remove()
+        untWin.remove()
     }, 1000)
 }
