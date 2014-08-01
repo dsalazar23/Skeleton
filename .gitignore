@@ -1,14 +1,12 @@
 node_modules
 
-Lib/LDAP.class.php
-Lib/WsPortal.class.php
-
 vendor/Smarty/templates_c/*
 vendor/Smarty/cache/*
 vendor/Smarty/configs/*
 
 webroot/js/main.min.js
 webroot/js/lib/vendors.min.js
+webroot/locale/es_ES.js
 
 Lib/FactoryDAO.class.php
 include/includeDAO.php
@@ -17,5 +15,3 @@ Model/genModel/*
 DataAccess/DTO/*
 DataAccess/DAO/interfaces/*
 DataAccess/DAO/mysql/gen/*
-
-*.css

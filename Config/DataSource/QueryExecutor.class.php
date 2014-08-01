@@ -31,17 +31,63 @@ class QueryExecutor {
         $result = $connection->executeQuery($query);
 
         if (!$result) {
-            throw new Exception(mysql_error());
+            throw new Exception(mysqli_error($connection->connection));
         }
+
+        if (gettype($result) == 'boolean')
+            return $result;
 
         $i = 0;
         $tab = array();
 
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = mysqli_fetch_array($result)) {
             $tab[$i++] = $row;
         }
 
-        mysql_free_result($result);
+        mysqli_free_result($result);
+
+        if (!$transaction) {
+            $connection->close();
+        }
+
+        return $tab;
+    }
+
+    /**
+     * Ejecuta la consulta SQL que le pasan como parámetro con múltiples sentencias.
+     * 
+     * @param SqlQuery $sqlQuery
+     *        Consulta SQL multiple a ejecutar.
+     * 
+     * @return array Arreglo que contiene el resultado de ejecutar la consulta.
+     */
+    public static function multi_execute($sqlQuery) {
+        $transaction = Transaction::getCurrentTransaction();
+
+        if (!$transaction) {
+            $connection = new Connection();
+        } else {
+            $connection = $transaction->getConnection();
+        }
+
+        $query = $sqlQuery->getQuery();
+        $result = $connection->executeMultiQuery($query);
+
+        if (!$result) {
+            throw new Exception(mysqli_error($connection->connection));
+        }
+
+        if (gettype($result) == 'boolean')
+            return $result;
+
+        $i = 0;
+        $tab = array();
+
+        while ($row = mysqli_fetch_array($result)) {
+            $tab[$i++] = $row;
+        }
+
+        mysqli_free_result($result);
 
         if (!$transaction) {
             $connection->close();
@@ -58,23 +104,26 @@ class QueryExecutor {
      *
      * @return int número de fila afectadas exitosamente, -1 si la query falla.
      */
-    public static function executeUpdate($sqlQuery) {
-        $transaction = Transaction::getCurrentTransaction();
+    public static function executeUpdate($sqlQuery, &$connection = null) {
+        
+        if ($connection === null) {
+            $transaction = Transaction::getCurrentTransaction();        
 
-        if (!$transaction) {
-            $connection = new Connection();
-        } else {
-            $connection = $transaction->getConnection();
+            if (!$transaction) {
+                $connection = new Connection();
+            } else {
+                $connection = $transaction->getConnection();
+            }
         }
 
         $query = $sqlQuery->getQuery();
         $result = $connection->executeQuery($query);
 
         if (!$result) {
-            throw new Exception(mysql_error());
+            throw new Exception(mysqli_error($connection->connection));
         }
         
-        return mysql_affected_rows();
+        return mysqli_affected_rows($connection->connection);
     }
 
     /**
@@ -88,8 +137,17 @@ class QueryExecutor {
      *
      */
     public static function executeInsert($sqlQuery) {
-        QueryExecutor::executeUpdate($sqlQuery);
-        return mysql_insert_id();
+        $transaction = Transaction::getCurrentTransaction();
+
+        if (!$transaction) {
+            $connection = new Connection();
+        } else {
+            $connection = $transaction->getConnection();
+        }
+
+        QueryExecutor::executeUpdate($sqlQuery, $connection);
+        
+        return mysqli_insert_id($connection->connection);
     }
 
     /**
@@ -112,10 +170,10 @@ class QueryExecutor {
         $result = $connection->executeQuery($sqlQuery->getQuery());
 
         if (!$result) {
-            throw new Exception(mysql_error());
+            throw new Exception(mysqli_error($connection->connection));
         }
 
-        $row = mysql_fetch_array($result);
+        $row = mysqli_fetch_array($result);
 
         return $row[0];
     }

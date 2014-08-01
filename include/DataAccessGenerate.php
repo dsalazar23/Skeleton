@@ -31,17 +31,20 @@ require_once(LIB .'Template.class.php');
 /**
  * Función principal del Archivo, ejecuta todas las funciones de auto-generated.
  */
-    function generate() {
+    function generate($flag = false) {
         
         //Obteniendo todas las tablas de la base de datos configurada
         $tables = QueryExecutor::execute(new SqlQuery('show TABLES'));
         
-        createFolders();
-        generateDTOObjects($tables);
-        generateInterfaceDAOObjects($tables);
-        generateGenDAOObjects($tables);
-        generateDAOObjects($tables);
-        generateModelObjects($tables);
+        if (!$flag) {
+            createFolders();
+            generateDTOObjects($tables);
+            generateInterfaceDAOObjects($tables);
+            generateGenDAOObjects($tables);
+            generateGenDAOObjectsMg($tables);
+            generateDAOObjects($tables);
+            generateModelObjects($tables);
+        }
         createFactoryDAO($tables);
         createIncludeFile($tables);
         
@@ -52,12 +55,14 @@ require_once(LIB .'Template.class.php');
  * Crea las carpetas sobre el servidor
  */
     function createFolders() {
+        @mkdir(DATA_ACCESS . 'DTO');
         @mkdir(DATA_ACCESS . 'DAO');
         @mkdir(DATA_ACCESS . 'DAO' . DS . 'interfaces');
+        @mkdir(MODEL_CLASS_PATH . 'genModel');
         @mkdir(DATA_ACCESS . 'DAO' . DS . 'mysql');
         @mkdir(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS .'gen');
-        @mkdir(DATA_ACCESS . 'DTO');
-        @mkdir(MODEL_CLASS_PATH . 'genModel');
+        @mkdir(DATA_ACCESS . 'DAO' . DS . 'mongodb');
+        @mkdir(DATA_ACCESS . 'DAO' . DS . 'mongodb' . DS .'gen');
     }
 
 /**
@@ -81,11 +86,12 @@ require_once(LIB .'Template.class.php');
             $template->set('table_name', $tableName);
             $tab = getFields($tableName);
             $fields = "\r\n";
+            $dates = '';
             
             
             //Seleccionando Comentarios de tabla
             $sql = 'select COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS  where 
-                TABLE_SCHEMA = "unnotes" and TABLE_NAME = "' . $tables[$i][0] . '"';
+                TABLE_SCHEMA = "' . ConnectionProperty::getDatabase() . '" and TABLE_NAME = "' . $tables[$i][0] . '"';
 
             $comments = QueryExecutor::execute(new SqlQuery($sql));
 
@@ -94,9 +100,12 @@ require_once(LIB .'Template.class.php');
                     $comment = str_replace("\n", "\n\t", $comments[$j][0]);
                     $fields .= "\t/** " . $comment . " */\n";
                 }
-                if ($tab[$j][4] == '')
+                if ($tab[$j][4] == ''){
                     $fields .= "\tvar $" . getVarNameWithS($tab[$j][0]) . ";\n\r\n\r";
-                else {
+                    if ($tab[$j]['Type'] == 'datetime') {
+                        $dates .= '$this->' . getVarNameWithS($tab[$j][0]) . " = date('Y-m-d H:i:s');\n\t";
+                    }                    
+                } else {
                     if (is_numeric($tab[$j][4]))
                         $fields .= "\tvar $" . getVarNameWithS($tab[$j][0]) . 
                             " = " . $tab[$j][4] . ";\n\r\n\r";
@@ -107,6 +116,7 @@ require_once(LIB .'Template.class.php');
             }
 
             $template->set('variables', $fields);
+            $template->set('dates', $dates);
             $template->write(DATA_ACCESS . 'DTO' . DS . $className . 'DTO.class.php');
         }
     }
@@ -386,6 +396,174 @@ require_once(LIB .'Template.class.php');
     }
 
 /**
+ * Permite generar las clases *MsDAO para cada tabla de la base de datos.
+ *
+ * @param array $tables
+ *        Conjunto de tablas de la base de datos a las que se le crearán el MsDAO.
+ */
+    function generateGenDAOObjectsMg($tables) {
+
+        for ($i = 0; $i < count($tables); $i++) {
+
+            if (!doesTableContainPK($tables[$i])) {
+                continue;
+            }
+
+            // Definiendo variables para todas las acciones a realizar.
+            $tableName = $tables[$i][0];
+            $className = getClassName($tableName);
+            $tab = getFields($tableName);
+            $parameterSetter = "\n\t";
+            $insertFields = "";
+            $updateFields = "";
+            $questionMarks = "";
+            $readRow = "\n";
+            $pk = array();
+            $queryByField = '';
+            $deleteByField = '';
+            $pk_type = array();
+
+            for ($j = 0; $j < count($tab); $j++) {
+                if ($tab[$j][3] == 'PRI') {
+                    $c = count($pk);
+                    $pk[$c] = $tab[$j][0];
+                    $pk_type[$c] = $tab[$j][1];
+                } else {
+                    $insertFields .= '`' . $tab[$j][0] . '`' . ", ";
+                    $updateFields .= '`' . $tab[$j][0] . '`' . " = ?, ";
+                    $questionMarks .= "?, ";            
+                    $parameterSetter2 = '';
+
+                    if (isColumnTypeNumber($tab[$j][1])) {
+                        $parameterSetter .= "\t\$sqlQuery->setNumber($" . 
+                                getVarName($tableName) . "DTO->" . 
+                                getVarNameWithS($tab[$j][0]) . ");\n\t";
+                        
+                        $parameterSetter2 .= "Number";
+                    } else {
+                        $parameterSetter .= "\t\$sqlQuery->set($" . 
+                                getVarName($tableName) . "DTO->" . 
+                                getVarNameWithS($tab[$j][0]) . ");\n\t";
+                    }
+
+                    $find = 'find';
+
+                    if ($tab[$j][3] == 'UNI') {
+                        $return = 'return $this->readRow( $cursor );';
+                        $find = 'findOne';
+                    } else {
+                        $return = 'return $this->getList( $cursor );';
+                    }
+
+                    $queryByField .= "public function queryBy" . 
+                            getMethodName($tab[$j][0]) . "(\$value) {
+        \$db = Connection::getDatabase();
+        \$collection = \$db->" . $tableName . ";
+        \$cursor = \$collection->" . $find . "( array('" . $tab[$j][0] . "' => \$value) );\n
+        " . $return . "
+    }\n\n    ";
+
+                    $deleteByField .= "public function deleteBy" . 
+                            getMethodName($tab[$j][0]) . "(\$value){
+        \$db = Connection::getDatabase();
+        \$collection = \$db->" . $tableName . ";
+        \$collection->remove( array('" . $tab[$j][0] . "' => \$value) );\n
+        return;
+    }\n\n    ";
+
+                }
+                if (getVarNameWithS($tab[$j][0]) != 'id')
+                    $readRow .= "\t\t\$" . getVarName($tableName) . "DTO->" . 
+                            getVarNameWithS($tab[$j][0]) . " = \$row['" . getVarNameWithS($tab[$j][0]) . "'];\n";
+            }
+
+            if (count($pk) == 0) {
+                continue;
+            }
+
+            $template = new Template(TEMPLATES . 'DAOGenMg.tpl');
+
+            $template->set('dao_class_name', 'gen' . $className . 'Mg');
+            $template->set('domain_class_name', getClassName($tableName));
+            $template->set('idao_class_name', getClassName($tableName));
+            $template->set('table_name', $tableName);
+            $template->set('var_name', getVarName($tableName));
+
+            $insertFields = substr($insertFields, 0, strlen($insertFields) - 2);
+            $updateFields = substr($updateFields, 0, strlen($updateFields) - 2);
+            $questionMarks = substr($questionMarks, 0, strlen($questionMarks) - 2);
+
+            $s = '';
+            $s2 = '';
+            $s3 = '';
+            $s4 = '';
+            $keys = '$keys = array();';
+            $insertFields2 = $insertFields;
+            $questionMarks2 = $questionMarks;
+
+            for ($z = 0; $z < count($pk); $z++) {
+                $questionMarks2.=', ?';
+
+                if ($z > 0) {
+                    $s.=', ';
+                    $s2.=' AND ';
+                    $s3.= "\t";
+                }
+
+                $insertFields2.=', ' . $pk[$z];
+                $s .= '$' . getVarNameWithS($pk[$z]);
+                $prop = (getVarNameWithS($pk[$z]) == 'id') ? '_id' : getVarNameWithS($pk[$z]);
+                $keys .= "\n\t\t" . '$keys["' . $prop . '"] = (gettype($' . getVarNameWithS($pk[$z]) .
+                        ') == \'string\') ? new MongoID($' . getVarNameWithS($pk[$z]) . ') : $' . getVarNameWithS($pk[$z]). ';';
+                $s2 .= $pk[$z] . ' = ? ';
+                
+                if (isColumnTypeNumber($pk_type[$z])) {
+                    $s3 .= '$sqlQuery->setNumber($' . getVarNameWithS($pk[$z]) . ');';
+                    $s3 .= "\n\t";
+                    $s4 .= '$sqlQuery->setNumber($' . getVarName($tableName) . 
+                            'DTO->' . getVarNameWithS($pk[$z]) . ');';
+                    $s4 .= "\n\t";
+                } else {
+                    $s3 .= '$sqlQuery->set($' . getVarNameWithS($pk[$z]) . ');';
+                    $s3 .= "\n\t";
+                    $s4 .= '$sqlQuery->set($' . getVarName($tableName) . 
+                            'DTO->' . getVarNameWithS($pk[$z]) . ');';
+                    $s4 .= "\n\t";
+                }
+            }
+
+            $keys = substr($keys, 0, count($keys) - 2);
+
+            if ($s[0] == ',')
+                $s = substr($s, 1);
+
+            if ($questionMarks2[0] == ',')
+                $questionMarks2 = substr($questionMarks2, 1);
+
+            if ($insertFields2[0] == ',')
+                $insertFields2 = substr($insertFields2, 1);
+
+            $template->set('question_marks2', $questionMarks2);
+            $template->set('insert_fields2', $insertFields2);
+            $template->set('pk_set_update', $s4);
+            $template->set('pk_set', $s3);
+            $template->set('pk_where', $s2);
+            $template->set('pk', $s);
+            $template->set('array_keys', $keys);
+            $template->set('insert_fields', $insertFields);
+            $template->set('read_row', $readRow);
+            $template->set('update_fields', $updateFields);
+            $template->set('question_marks', $questionMarks);
+            $template->set('parameter_setter', $parameterSetter);
+            $template->set('read_row', $readRow);
+            $template->set('queryByFieldFunctions', $queryByField);
+            $template->set('deleteByFieldFunctions', $deleteByField);
+            $template->write(DATA_ACCESS . 'DAO' . DS . 'mongodb' . DS . 
+                    'gen' . DS . 'gen' . $className . 'MgDAO.class.php');
+        }
+    }    
+
+/**
  * Permite generar las clases *MsExtDAO para cada tabla de la base de datos.
  *
  * @param array $tables
@@ -409,6 +587,37 @@ require_once(LIB .'Template.class.php');
             $template->set('table_name', $tableName);
 
             $file = DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . $className . 'DAO.class.php';
+
+            if (!file_exists($file)) {
+                $template->write($file);
+            }
+        }
+    }
+
+/**
+ * Permite generar las clases *MsExtDAO para cada tabla de la base de datos.
+ *
+ * @param array $tables
+ *        Conjunto de tablas de la base de datos a las que se le crearán el MsExtDAO.
+ */
+    function generateDAOObjectsMg($tables) {
+
+        for ($i = 0; $i < count($tables); $i++) {
+
+            if (!doesTableContainPK($tables[$i])) {
+                continue;
+            }
+
+            //Definiendo variables
+            $tableName = $tables[$i][0];
+            $className = getClassName($tableName) . 'Mg';
+            $classNameSup = 'gen' . getClassName($tableName) . 'Mg';
+            $template = new Template(TEMPLATES . 'DAO.tpl');
+            $template->set('dao_class_sup_name', $classNameSup);
+            $template->set('dao_class_name', $className);
+            $template->set('table_name', $tableName);
+
+            $file = DATA_ACCESS . 'DAO' . DS . 'mongodb' . DS . $className . 'DAO.class.php';
 
             if (!file_exists($file)) {
                 $template->write($file);
@@ -449,7 +658,7 @@ require_once(LIB .'Template.class.php');
         }";
 
             $sql = 'select COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS  where
-                TABLE_SCHEMA = "unnotes" and TABLE_NAME = "' . $tables[$i][0] . '"';
+                TABLE_SCHEMA = "' . ConnectionProperty::getDatabase() . '" and TABLE_NAME = "' . $tables[$i][0] . '"';
 
             $comments = QueryExecutor::execute(new SqlQuery($sql));
 
@@ -506,9 +715,16 @@ require_once(LIB .'Template.class.php');
             $str .= "\t * @return ".$className."DAO\n";
             $str .= "\t */\n";
             $str .= "\tpublic static function get".$className."DAO() {\n";
-            $str .= "\t\treturn new ".$className."MsDAO();\n";
+            
+            if (!isset($_GET['db']) || $_GET['db'] != 'mongodb') {
+                $str .= "\t\treturn new ".$className."MsDAO();\n";    
+            } else {
+                $str .= "\t\treturn new ".$className."MgDAO();\n";
+            }
+            
             $str .= "\t}\n\n";
         }
+
         $template = new Template(TEMPLATES . 'FactoryDAO.tpl');
         $template->set('content', $str);
 
@@ -536,8 +752,14 @@ require_once(LIB .'Template.class.php');
             $str .= "\trequire_once(MODEL . '" . $className . ".class.php');\n";
             $str .= "\trequire_once(DATA_ACCESS . 'DTO' . DS . '" . $className . "DTO.class.php');\n";
             $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'interfaces' . DS . '" . $className . "DAO.interface.php');\n";
-            $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . 'gen' . DS . 'gen" . $className . "MsDAO.class.php');\n";
-            $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . '" . $className . "MsDAO.class.php');\n";
+
+            if (!isset($_GET['db']) || $_GET['db'] != 'mongodb') {
+                $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . 'gen' . DS . 'gen" . $className . "MsDAO.class.php');\n";
+                $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mysql' . DS . '" . $className . "MsDAO.class.php');\n";
+            } else {
+                $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mongodb' . DS . 'gen' . DS . 'gen" . $className . "MgDAO.class.php');\n";
+                $str .= "\trequire_once(DATA_ACCESS . 'DAO' . DS . 'mongodb' . DS . '" . $className . "MgDAO.class.php');\n";
+            }           
         }
 
         $template = new Template(TEMPLATES . 'IncludeDAO.tpl');
@@ -729,10 +951,16 @@ require_once(LIB .'Template.class.php');
     }
 
 // --- Corriendo función generate
-if (!isset($_GET['key']) || $_GET['key'] != 'executeDAO') {
+if (!isset($_GET['key']) || ($_GET['key'] != 'executeDAO' && $_GET['key'] != 'changeDB')) {
     echo '<b><font style:"font-size:15px">UnNotes</b><br/>Sorry.. You are not authorized to execute this file';
     return;
 }
-generate();
+
+if ($_GET['key'] != 'changeDB')
+    generate();
+else {
+    generate(true);
+}
+
 
 ?>

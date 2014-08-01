@@ -1,3 +1,35 @@
+v0.3
+	date 2014-08-01
+	- Compatibilidad con MongoDB
+	- Cambiando módulo de conexión a datos : mysql => mysqli
+	- Implementación de Dispatcher usando index.php y accediento a clases Controller.
+	- Implementación de capa de "Exceptions" controladas por index.php
+	- Variación de DataAccessGenerate para producir archivos para MongoDB
+	- Implementación de i18n a través de arreglos php.
+	- Creación de Templeates para MongoDB.
+	- Cración de archivo i18n es_ES.
+	- Implementación para la verificación de username y email.
+	- Eliminicación de Carpeta View/App y creación de View/Pages
+	- Modificación de footer.php e head.php; inclusión de header.php
+	- Añadido archivo .htaccess en Views
+	- Eliminación de carpeta webroot/ajax
+	- Inclusión de imágenes para jquery-ui
+	- Cambio de estilos
+	- Inclusión de "fonts"
+	- Cambio de nombre para images => img
+	- Se añade imagenes loader.png - wicons.png
+	- Se añade archivos views.js
+	- Se incluye archivo webroot/locale/es_ES en gruntfile.js y se por tanto cambia nombre a _es_ES
+	- Se incluye plugin validate.password.js
+	- Se actualiza plugin untInput
+	- Se actualiza .htaccess
+	- Se actualiza Gruntfile.js
+	- Se añade archivo robots.txt
+	- Se añade archivo de configuración para IIS (web.config)
+
+
+######################### DEPRECATED ###########################
+
 v0.2
 	date 2014-02-04
 	- Se añadio formulario de autenticación página de inicio

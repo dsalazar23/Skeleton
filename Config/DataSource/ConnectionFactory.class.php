@@ -17,9 +17,27 @@ class ConnectionFactory {
      *
      * @return <type> Conexión a la base de datos
      */
+    static public function getConnection_() {
+        $connection = new MongoClient( 'mongodb://' 
+                                       . ConnectionProperty::getUser() . ':' 
+                                       . ConnectionProperty::getPassword() . '@' 
+                                       . ConnectionProperty::getHost() . '/' 
+                                       . ConnectionProperty::getDatabase() );
+
+        return $connection;
+    }
+
+    /**
+     * Retorna una conexión a la base de datos de acuerdo a las propiedades
+     * de conexión configuradas en el archivo <code>ConnectionProperty</code>.
+     *
+     * @return <type> Conexión a la base de datos
+     */
     static public function getConnection() {
-        $conn = mysql_connect(ConnectionProperty::getHost(), ConnectionProperty::getUser(), ConnectionProperty::getPassword());
-        mysql_select_db(ConnectionProperty::getDatabase());
+        $conn = mysqli_connect(ConnectionProperty::getHost(), 
+                               ConnectionProperty::getUser(), 
+                               ConnectionProperty::getPassword(), 
+                               ConnectionProperty::getDatabase());        
         if (!$conn) {
             throw new Exception('could not connect to database');
         }
@@ -33,7 +51,7 @@ class ConnectionFactory {
      *               Conexión a cerrar.
      */
     static public function close($connection) {
-        mysql_close($connection);
+        mysqli_close($connection);
     }
 
 }

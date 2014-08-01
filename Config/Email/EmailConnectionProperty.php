@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Propiedades de conexión para la base de datos.
+ * Propiedades de conexión al servidor de correo electrónico.
  *
  * @package     Config.Email
  * @author      JpBaena13
@@ -10,10 +10,9 @@
 class EmailConnectionProperty {
 
     private static $host = '';
-    private static $port = '465';
-    private static $user = '';
+    private static $user = '465';
     private static $password = '';
-    private static $from = '';
+    private static $from = 'noreply@skeleton.com';
     
 
     public static function getEmailHost() {

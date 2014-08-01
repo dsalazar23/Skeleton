@@ -9,7 +9,32 @@
  */
 class User extends genUser {
 
-	 /**
+    /**
+     * Permite retornar el nombre completo del usuario. Este está constituido
+     * por el firtsname + lastname 
+     * 
+     * @return Retornar el nombre completo del usuario
+     */
+    public function getFullname() {
+        if ($this->getFirstname() == '' && $this->getLastname() == '')
+            return $this->getUsername();
+
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * Configura la constraseña del usuario con una encriptación AES además de
+     * agregarle al final de la cadena el correo del usuario.
+     * Esto permite que dos contraseña de usuario iguales queden encriptadas
+     * de dos formas diferente.
+     *
+     * @param string $password Contraseña sin encriptar del usuario.
+     */
+    public function setPassword($password) {
+        $this->userDTO->password = aesEncrypt($password . $this->getUsername());
+    }
+
+    /**
      * Realiza el checkeo de autenticación de acuerdo a los valores
      * de $userdata y $password especificados por el usuario.
      *
@@ -21,7 +46,8 @@ class User extends genUser {
      *          
      *          <ul>
      *              <li> 1 => Cuando el email o nombre de usuario no existe</li>
-     *              <li> 0 => Cuando el password no coincide con el username o email.
+     *              <li> X => Cuando el password no coincide con el username o email retorne el número 
+     *              		  de intentos fallidos consecutivos que se han hecho para ese usuario.
      *              </li>
      *          </ul>
      */
@@ -45,13 +71,53 @@ class User extends genUser {
         $user->userDTO = $userDTO;
         
         // Verificando que usuario y contraseña conincidan
-        if ($user->getPassword() != aesEncrypt($password . $user->getUsername())) {
-            $a = aesEncrypt($password . $user->getUsername());
-            
+        if ($user->getPassword() != aesEncrypt($password . $user->getUsername())) {            
             return 0;
         }
             
         return $user;
-    }	
+    }
+
+    /**
+     * Retorna una instancia de User asociado al email especificado o null
+     * en caso contrario.
+     * 
+     * @param  string $email Correo electrónico del usuario a retornar
+     * 
+     * @return User Usuario asociado al correo eléctrónico
+     */
+    public static function getUserByEmail($email) {
+
+        $userDTO = FactoryDAO::getUserDAO()->queryByEmail($email);
+
+        if (!$userDTO)
+            return null;
+
+        $user = new User();
+        $user->setUserDTO( $userDTO );
+
+        return $user;
+    }
+
+    /**
+     * Retorna una instancia de User asociado al username especificado o null
+     * en caso contrario.
+     * 
+     * @param  string $username Nombre de usuario asociado al <User> a retornar.
+     * 
+     * @return User Usuario asociado al username
+     */
+    public static function getUserByUsername($email) {
+
+        $userDTO = FactoryDAO::getUserDAO()->queryByUsername($email);
+
+        if (!$userDTO)
+            return null;
+
+        $user = new User();
+        $user->setUserDTO( $userDTO );
+
+        return $user;
+    }
 }
 ?>

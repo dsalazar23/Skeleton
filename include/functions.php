@@ -22,7 +22,20 @@ $i18n = i18n::init();
  *        Clave a internacionalizar.
  */
     function __($label) {
-        return $i18n->_($label);
+        global $i18n;
+        return $i18n->__($label);
+    }
+
+/**
+ * Retorna valor internacionalizado correspondiente
+ * a la clave pasada como parámetro.
+ *
+ * @param string $label
+ *        Clave a internacionalizar.
+ */
+    function label($label) {
+        global $i18n;
+        return $i18n->get($label);
     }
 
     
@@ -299,7 +312,6 @@ $i18n = i18n::init();
         else 
             $res = file_get_contents($url);  
         
-        return $res;  
-}
-    
+        return $res;
+    }    
 ?>

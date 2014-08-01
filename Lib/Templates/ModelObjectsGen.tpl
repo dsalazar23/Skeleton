@@ -55,8 +55,11 @@ class gen${domain_class_name} {
      *
      * @return Array Arreglo con todos los objetos <${domain_class_name}>
      */
-    public static function getAll() {
+    public static function getAll($objects = true) {
          $${DTO_name}s = FactoryDAO::get${domain_class_name}DAO()->queryAll();
+
+         if (!$objects)
+            return $${DTO_name}s;
 
          $arr = Array();
 

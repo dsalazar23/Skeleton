@@ -55,6 +55,13 @@
     if (!defined('VIEW')) {
         define('VIEW', ROOT . 'View' . DS);
     }
+
+/**
+ * Ruta completa al directorio que contiene todas las exepciones
+ */
+    if (!defined('EXCEPTIONS')) {
+        define('EXCEPTIONS', ROOT . 'Exceptions' . DS);
+    }
     
 /**
  * Ruta completa al directorio que contiene las clases de acceso a datos
@@ -80,15 +87,22 @@
 /**
  * Ruta absoluta al directorio que contiene todas las vistas de aplicación
  */
-    if (!defined('APP_VIEW')) {
-        define('APP_VIEW', VIEW . 'App' . DS);
+    if (!defined('PAGE')) {
+        define('PAGE', VIEW . 'Pages' . DS);
     }
     
 /**
  * Ruta absoluta al directorio que contiene todas las vistas de errores
  */
-    if (!defined('ERRORS_VIEW')) {
-        define('ERRORS_VIEW', VIEW . 'Errors' . DS);
+    if (!defined('ERRORS')) {
+        define('ERRORS', VIEW . 'Errors' . DS);
+    }
+
+/**
+ * Ruta absoluta al directorio que contiene todas las vistas de errores
+ */
+    if (!defined('LOCALE')) {
+        define('LOCALE', ROOT . 'locale' . DS);
     }
 
 /**
@@ -96,7 +110,7 @@
  */
     if (!defined('SMARTY_DIR')) {
         define('SMARTY_DIR', ROOT . 'vendor' . DS . 'Smarty' . DS . 'libs' . DS);
-    }    
+    }
 
 /**
  * Ruta relativa al directorio raiz del sitio
@@ -114,13 +128,6 @@
     if (!defined('WEBROOT_URL')) {
         define('WEBROOT_URL', ROOT_URL . 'webroot/');
     }
-
-/**
- * Ruta relativa al directorio modules del sitio
- */
-    if (!defined('AJAX_URL')) {
-        define('AJAX_URL', WEBROOT_URL . 'ajax/');
-    }
     
     require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'Connection.class.php';
     require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'ConnectionFactory.class.php';
@@ -133,19 +140,19 @@
     require_once ROOT . 'Config' . DS . 'Email' . DS . 'EmailConnectionFactory.php';
     require_once ROOT . 'Config' . DS . 'Email' . DS . 'EmailConnectionProperty.php';
 
-    //TODO: Probando SAMRTY de manera Global
+    //TODO: SMARTY de manera Global
     require_once SMARTY_DIR . 'Smarty.class.php';
     $smarty = new Smarty();
     $smarty->compile_dir  = dirname(SMARTY_DIR) . DS . 'templates_c' . DS;
     $smarty->config_dir   = dirname(SMARTY_DIR) . DS . 'configs' . DS;
     $smarty->cache_dir    = dirname(SMARTY_DIR) . DS . 'cache' . DS;
 
+    require_once LIB . 'i18n.class.php';
+    require_once INCLD . 'functions.php';
+
     if (file_exists(LIB . 'FactoryDAO.class.php'))
         include_once LIB . 'FactoryDAO.class.php';
 
     if (file_exists(INCLD . 'includeDAO.php'))
         include_once INCLD . 'includeDAO.php';
-
-    require_once LIB . 'i18n.class.php';
-    require_once INCLD . 'functions.php';
 ?>

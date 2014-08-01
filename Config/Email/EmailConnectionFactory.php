@@ -25,7 +25,9 @@ class EmailConnectionFactory {
         $params["port"] = EmailConnectionProperty::getEmailPort(); 
         $params["auth"] = true; 
         $params["username"] = EmailConnectionProperty::getEmailUser();
-        $params["password"] = EmailConnectionProperty::getEmailPassword(); 
+        $params["password"] = EmailConnectionProperty::getEmailPassword();
+
+        error_reporting(E_ALL ^ (E_NOTICE | E_STRICT)); 
 
         // Create the mail object using the Mail::factory method 
         $conn =& Mail::factory("smtp", $params); 

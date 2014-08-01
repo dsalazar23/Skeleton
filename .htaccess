@@ -215,10 +215,9 @@ AddDefaultCharset utf-8
     RewriteEngine On
   # RewriteBase /
 
-    RewriteRule ^ax/([a-zA-Z]+)$ /Skeleton/webroot/ajax/$1.ajax.php
-    RewriteRule ^rq/([a-zA-Z]+)$ /Skeleton/webroot/ajax/$1.php
-    RewriteRule ^p/([a-zA-Z]+)$  /Skeleton/webroot/plugins/$1
-    RewriteRule ^([a-zA-Z]+)$ /Skeleton/index.php?page=$1 [QSA]
+    RewriteRule ^API/([a-zA-Z]+)/([a-zA-Z]+)/([a-zA-Z0-9\.]*)$ /Skeleton/index.php?controller=$1&action=$2&id=$3 [QSA]
+    RewriteRule ^API/([a-zA-Z]+)/?([a-zA-Z0-9]*)$ /Skeleton/index.php?controller=$1&action=API&id=$2 [QSA]
+    RewriteRule ^([a-zA-Z]+)/?([a-zA-Z]*)/?([a-zA-Z0-9]*)$ /Skeleton/index.php?controller=$1&action=$2&id=$3 [QSA]
 
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}\.php -f
@@ -246,11 +245,11 @@ AddDefaultCharset utf-8
 
 # Option 1: rewrite www.example.com → example.com
 
-<IfModule mod_rewrite.c>
-    RewriteCond %{HTTPS} !=on
-    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
-</IfModule>
+#<IfModule mod_rewrite.c>
+#    RewriteCond %{HTTPS} !=on
+#    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+#    RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
+#</IfModule>
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -259,11 +258,11 @@ AddDefaultCharset utf-8
 # Be aware that the following might not be a good idea if you use "real"
 # subdomains for certain parts of your website.
 
-# <IfModule mod_rewrite.c>
+#<IfModule mod_rewrite.c>
 #    RewriteCond %{HTTPS} !=on
 #    RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
 #    RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-# </IfModule>
+#</IfModule>
 
 
 # ##############################################################################

@@ -27,19 +27,19 @@ class EmailConnection {
      * @return <type> Valor obtenido si se ejecuta correctamente el envio del correo
      */
     public function sendMail($recipients, $subject, $message) {
-        $headers["From"]         = EmailConnectionProperty::getEmailFrom();
-        $headers["To"]           = $recipients;
-        $headers["Subject"]      = $subject;
-        $headers['Content-Type'] = 'text/html';
-        
-        $ret = $this->connection->send($recipients, $headers, $message); 
+        $headers["from"]         = EmailConnectionProperty::getEmailFrom();
+        $headers["to"]           = $recipients;
+        $headers["subject"]      = $subject;
+        $headers['content-type'] = 'text/html';
+        $headers['charset']      = 'UTF-8';
+
+        $ret = $this->connection->send($recipients, $headers, $message);
         if (PEAR::isError($ret)) {
             throw new Exception($ret->getMessage());
         }
-    
-        return $ret;
-    }
 
+        return $ret;        
+    }
 }
 
 ?>

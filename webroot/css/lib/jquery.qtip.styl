@@ -12,11 +12,12 @@
  */
  
 .qtip, .qtip
+	font-family Arial
 	position absolute
 	left -28000px
 	top -28000px
 	display none
-	max-width 280px
+	max-width 500px
 	min-width 50px
 	font-size 10.5px
 	line-height 12px
@@ -83,11 +84,13 @@
 .qtip-hover
 
 .qtip-default
-	border-width 1px
+	border-width thin
 	border-style solid
-	border-color #F1D031
-	background-color #FFFFA3
-	color #555
+	border-color #555
+	background-color #373737
+	background-image linear-gradient(#373737, #111)
+	color #d5ca3b
+	text-shadow 1px 1px 0px black
 
 .qtip-default .qtip-titlebar
 	background-color #FFEF93
@@ -193,16 +196,22 @@
 	color white
 	border-width 0
 	background #4A4A4A
+	background-image -webkit-gradient(linear,left top,left bottom,color-stop(0,#4A4A4A),color-stop(100%,black))
+	background-image -webkit-linear-gradient(top,#4A4A4A 0,black 100%)
+	background-image -moz-linear-gradient(top,#4A4A4A 0,black 100%)
+	background-image -ms-linear-gradient(top,#4A4A4A 0,black 100%)
 	background-image -o-linear-gradient(top,#4A4A4A 0,black 100%)
 
 .qtip-youtube .qtip-titlebar
+	background-color: #4A4A4A;
 	background-color rgba(0,0,0,0)
 
 .qtip-youtube .qtip-content
 	padding .75em
 	font 12px arial,sans-serif
-	// filter progidDXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000)
-	// -ms-filter progidDXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);
+	filter s("progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000)")
+	-ms-filter "progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr=#4a4a4a,EndColorStr=#000000);";
+
 .qtip-youtube .qtip-icon
 	border-color #222
 
@@ -210,8 +219,14 @@
 	border-color #303030
 
 .qtip-jtools
+	background: #232323;
 	background rgba(0, 0, 0, 0.7)
+	background-image -webkit-gradient(linear, left top, left bottom, from(#717171), to(#232323))
+	background-image -moz-linear-gradient(top, #717171, #232323)
+	background-image -webkit-linear-gradient(top, #717171, #232323)
+	background-image -ms-linear-gradient(top, #717171, #232323)
 	background-image -o-linear-gradient(top, #717171, #232323)
+	border 2px solid #ddd
 	border 2px solid rgba(241,241,241,1)
 	-moz-border-radius 2px
 	-webkit-border-radius 2px
@@ -222,12 +237,12 @@
 
 .qtip-jtools .qtip-titlebar
 	background-color transparent
-// filter progidDXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A)
-// -ms-filter "progidDXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A)"
+	filter s("progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A)")
+	-ms-filter "progid:DXImageTransform.Microsoft.gradient(startColorstr=#717171,endColorstr=#4A4A4A);"
 
-// .qtip-jtools .qtip-content
-// filter progidDXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)
-// -ms-filter "progidDXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)"
+.qtip-jtools .qtip-content
+	filter s("progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323)")
+	-ms-filter "progid:DXImageTransform.Microsoft.gradient(startColorstr=#4A4A4A,endColorstr=#232323);"
 
 .qtip-jtools .qtip-titlebar,.qtip-jtools .qtip-content
 	background transparent
@@ -261,6 +276,7 @@
 	color #696952
 
 .qtip-tipsy
+	background: black;
 	background rgba(0, 0, 0, .87)
 	color white
 	border 0 solid transparent
@@ -298,9 +314,13 @@
 	border-bottom-width 0
 	color white
 	background #3A79B8
+	background-image -webkit-gradient(linear, left top, left bottom, from(#3A79B8), to(#2E629D))
+	background-image -webkit-linear-gradient(top, #3A79B8, #2E629D)
+	background-image -moz-linear-gradient(top, #3A79B8, #2E629D)
+	background-image -ms-linear-gradient(top, #3A79B8, #2E629D)
 	background-image -o-linear-gradient(top, #3A79B8, #2E629D)
-// filter progidDXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)
-// -ms-filter "progidDXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)"
+	filter s("progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D)")
+	-ms-filter "progid:DXImageTransform.Microsoft.gradient(startColorstr=#3A79B8,endColorstr=#2E629D);"
 
 .qtip-tipped .qtip-icon
 	border 2px solid #285589
@@ -360,14 +380,14 @@
 	color #000000
 	text-shadow 0 1px 0 #ffffff
 	opacity 0.2
-	// filter alpha(opacity=20)
+	filter s("alpha(opacity=20)")
 
 .qtip-bootstrap .qtip-icon .ui-iconhover
 	color #000000
 	text-decoration none
 	cursor pointer
 	opacity 0.4
-	// filter alpha(opacity=40)
+	filter s("alpha(opacity=40)")
 
 .qtipnot(.ie9haxors) div.qtip-content,.qtipnot(.ie9haxors) div.qtip-titlebar
 	filter none
@@ -409,8 +429,8 @@
 	height 100%
 	background-color black
 	opacity 0.7
-// filter alpha(opacity=70)
-// -ms-filter "progidDXImageTransform.Microsoft.Alpha(Opacity=70)"
+	filter s("alpha(opacity=70)")
+	-ms-filter "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"
 
 .qtipmodal-ie6fix
 	position absolute !important

@@ -1,4 +1,4 @@
-/**
+/*!
  * Conjunto de funciones que restringe al uso de caractéres específicos,
  * especialmente para campos de texto.
  *

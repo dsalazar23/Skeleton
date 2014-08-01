@@ -56,6 +56,16 @@ abstract class AbstractDAO {
     }
 
     /**
+     * Ejecuta una sentencia SQL con múltiples consultas.
+     *
+     * @param SqlQuery $sqlQuery
+     *        Sentencia SQl a ejecutar.
+     */
+    protected function multi_execute($sqlQuery){
+        return QueryExecutor::multi_execute($sqlQuery);
+    }
+
+    /**
      * Ejecuta una sentencia SQL de tipo actualización.
      *
      * @param SqlQuery $sqlQuery

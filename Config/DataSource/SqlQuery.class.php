@@ -12,6 +12,7 @@ class SqlQuery {
     private $txt;
     private $params = array();
     private $idx = 0;
+    private $connection;
 
     /**
      * Constructor
@@ -20,6 +21,7 @@ class SqlQuery {
      *        Consulta SQL.
      */
     function SqlQuery($txt) {
+        $this->connection = new Connection();
         $this->txt = $txt;
     }
 
@@ -30,15 +32,19 @@ class SqlQuery {
      *        Valor a ser añadido.
      */
     public function setString($value) {
-        $value = mysql_real_escape_string($value);
-        $this->params[$this->idx++] = "'" . $value . "'";
+       $this->set( $value );
     }
 
     /**
      * @see setString($value)
      */
     public function set($value) {
-        $value = mysql_real_escape_string($value);
+        if ($value === null) {
+            $this->params[$this->idx++] = "null";
+            return;
+        }
+        
+        $value = mysqli_real_escape_string($this->connection->connection, $value);
         $this->params[$this->idx++] = "'" . $value . "'";
     }
     
@@ -48,7 +54,7 @@ class SqlQuery {
      * @see setString($value)
      */
     public function setValue($value) {
-        $value = mysql_real_escape_string($value);
+        $value = mysqli_real_escape_string($this->connection->connection, $value);
         $this->params[$this->idx++] = $value;
     }
 

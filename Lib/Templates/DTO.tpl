@@ -11,5 +11,11 @@
  */
 class ${domain_class_name}DTO {
     ${variables}
+    /**
+	 * Constructor de Clase
+	 */
+	public function __construct() {
+		${dates}
+	}
 }
 ?>
