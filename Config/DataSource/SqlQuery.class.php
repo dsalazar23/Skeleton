@@ -21,7 +21,12 @@ class SqlQuery {
      *        Consulta SQL.
      */
     function SqlQuery($txt) {
-        $this->connection = new Connection();
+        $transaction = Transaction::getCurrentTransaction();
+
+        if (!$transaction)
+            $transaction = new Transaction();
+        
+        $this->connection = $transaction->getConnection();
         $this->txt = $txt;
     }
 

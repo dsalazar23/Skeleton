@@ -1,4 +1,3 @@
-
 <?php
 
 /**
@@ -86,8 +85,10 @@ class Connection {
      */
     public function executeMultiQuery($sql) {
         mysqli_query($this->connection, "SET NAMES UTF8");
-        mysqli_multi_query($this->connection, $sql);
-        return $this->mysqli_last_result($this->connection);
+        $result = mysqli_multi_query($this->connection, $sql);
+        $last = $this->mysqli_last_result($this->connection);
+        
+        return ($last) ? $last : $result;     
     }
 
     /**

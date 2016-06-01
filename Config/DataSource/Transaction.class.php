@@ -20,11 +20,11 @@ class Transaction {
         $this->connection = new Connection();
 
         if (!Transaction::$transactions) {
-            Transaction::$transactions = new ArrayList();
+            Transaction::$transactions = array();
         }
 
-        Transaction::$transactions->add($this);
-        $this->connection->executeQuery('BEGIN');
+        array_push(Transaction::$transactions, $this);
+        // $this->connection->executeQuery('BEGIN');
     }
 
     /**
@@ -33,7 +33,7 @@ class Transaction {
     public function commit() {
         $this->connection->executeQuery('COMMIT');
         $this->connection->close();
-        Transaction::$transactions->removeLast();
+        array_pop(Transaction::$transactions);
     }
 
     /**
@@ -42,7 +42,7 @@ class Transaction {
     public function rollback() {
         $this->connection->executeQuery('ROLLBACK');
         $this->connection->close();
-        Transaction::$transactions->removeLast();
+        array_pop(Transaction::$transactions);
     }
 
     /**
@@ -61,7 +61,7 @@ class Transaction {
      */
     public static function getCurrentTransaction() {
         if (Transaction::$transactions) {
-            $tran = Transaction::$transactions->getLast();
+            $tran = end(Transaction::$transactions);
             return $tran;
         }
         return;
