@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Página no encontrada :(</title>
+        <link rel="shortcut icon" href="<?php echo WEBROOT_URL ?>img/default/favicon.ico" type="image/x-icon"/>
+        <title><?php echo __('invalid_token') ?></title>
         <style>
             html {
                 padding: 30px 10px;
@@ -28,6 +29,7 @@
                 margin: 0 auto;
                 box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff;
                 background: #fcfcfc;
+                text-align: center;
             }
 
             h1 {
@@ -48,8 +50,12 @@
     </head>
     <body>
         <div class="container">
-            <h1>Página no encontrada <span>:(</span></h1>
-            <p>Lo sentimos, pero esta página no existe</p>
+            <img src=" <?php echo WEBROOT_URL ?>img/default/logo_inline.png" alt="Lantia" width="300px">
+            <br><br>
+            <h1><?php echo __('invalid_token') ?> :(</span></h1>
+            <p>
+            	<?php echo __('invalid_token_description') ?>
+        	</p>
         </div>
     </body>
 </html>

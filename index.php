@@ -7,6 +7,11 @@
  */
 
 /**
+ * No mostrar errores
+ */
+    ini_set('display_errors', 1);
+
+/**
  * Obliga al usuario a pasar primero por esta página. Es verificado
  * en el index del webroot.
  */
@@ -41,7 +46,7 @@
         if (isset($_GET['controller'])) {
             $controller = $_GET['controller'];
         } else {
-            $controller = 'HOME';
+            $controller = 'Home';
         }
 
         // Mostrando error 404 si no se encuentra la página
@@ -53,13 +58,13 @@
         $controller = eval( 'new ' . $controller . 'Controller();' );
 
     } catch (ControllerNotFoundException $exc) {
-        include ERRORS . '404.html';        
+        include ERRORS . '404.php';        
 
     } catch (MethodNotImplementedException $exc) {
-        include ERRORS . '404.html';
+        include ERRORS . '404.php';
 
     } catch (InvalidTokenException $exc) {
-        include ERRORS . 'invalidToken.html';
+        include ERRORS . 'invalidToken.php';
 
     } catch (AuthenticationRequiredException $exc) {
         $error['error'] = array( "msg" => $exc->getMessage(), "code" => $exc->getCode(), "type" => get_class( $exc ) );
@@ -73,13 +78,27 @@
             if (headers_list()[4] == 'Content-Type: application/json') {
                 echo json_encode($error);
             }
+
+        } else if ( isset($_SERVER['HTTP_X_REQUESTED_WITH']) ) { 
+            echo json_encode($error);
+            
         } else {
             if ($auth->hasSession())
                 header('Location:' . ROOT_URL);
             else
-                header('Location:' . ROOT_URL . '?uri=' . urlencode($_SERVER['REQUEST_URI']));
+                header('Location:' . ROOT_URL . 'Login?uri=' . urlencode($_SERVER['REQUEST_URI']));
             exit();
         }
+
+    } catch (PaymentRequiredException $exc) {
+        // Configurando vista en una variable.
+        ob_start();
+        require_once VIEW . 'Elements' . DS . 'Pricing.php';
+        $content = ob_get_clean();
+
+        $error['error'] = array( "msg" => $exc->getMessage(), "code" => $exc->getCode(), "type" => get_class( $exc ), 'content' => $content );
+
+        echo json_encode($error);
 
     } catch (BadRequestException $exc) {
         $error['error'] = array( "msg" => $exc->getMessage(), "code" => $exc->getCode(), "type" => get_class( $exc ) );
@@ -103,9 +122,13 @@
 
     } catch (Exception $exc) {
         printLog($exc);
-        
+
+        // Enviando Email
+        $emailConn = new EmailConnection();
+        $emailConn->sendMail('admin@unnotes.com', '[Support] Error Request', $exc);
+
         header('HTTP/1.0 500 Internal Server Error');
-        include ERRORS . 'requestNotProcessed.html';
+        include ERRORS . 'requestNotProcessed.php';
     }
 
 ?>

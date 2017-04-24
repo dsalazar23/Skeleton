@@ -19,6 +19,7 @@ class LoginController extends Controller {
 	 * @GET /Login
 	 */
 	public function DefaultView() {
+		include_once PAGE . 'Home.php';
 	}
 
 	/**

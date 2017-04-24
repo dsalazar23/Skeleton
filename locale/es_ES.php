@@ -36,6 +36,12 @@ $dicc = array(
 		'firstname' => 'Nombres',
 		'lastname' => 'Apellidos',
 		'username' => 'Nombre de usuario',
+
+		// Error}
+		'page_not_found' => 'Página no encontrada',
+		'this_page_doesnt_exist' => 'Lo sentimos, pero está página no existe',
+		'invalid_token' => 'Token Inválido',
+		'invalid_token_description' => 'Lo sentimos, pero no pudimos comprobar el token especificado. lantiasas.com usa un sistema de validación de tokens para dar seguridad a la información de tu cuenta. Por favor regresa a la página e intenta de nuevo.',
 	);
 
 ?>

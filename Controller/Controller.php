@@ -156,7 +156,7 @@ abstract class Controller {
 
         if (in_array('@AUTHORIZE', $annotations)) {
             if (!$hasSession) {
-            	header('Location: ' . ROOT_URL . '?uri=' . urlencode($_SERVER['REQUEST_URI']));
+            	header('Location: ' . ROOT_URL . 'Login?uri=' . urlencode($_SERVER['REQUEST_URI']));
                 exit();
             }
         } else {
