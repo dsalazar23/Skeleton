@@ -24,10 +24,10 @@ abstract class Controller {
 
 		try {
 
+			$this->user = isset( $_SESSION['user'] ) ? $_SESSION['user'] : new User();
+
 			if ($action === null)
 				$action = !empty( $_GET['action'] ) ? $_GET['action'] : null;
-
-			$this->user = isset( $_SESSION['user'] ) ? $_SESSION['user'] : new User();
 			
 			if ($action === null || empty($action)) {
 				if ($applyAnnotations)
@@ -153,6 +153,9 @@ abstract class Controller {
 
         global $auth;
         $hasSession = $auth->hasSession($json);
+
+        if ($hasSession)
+-        	$this->user = $_SESSION['user'];
 
         if (in_array('@AUTHORIZE', $annotations)) {
             if (!$hasSession) {

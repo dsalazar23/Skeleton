@@ -15,8 +15,10 @@
 
 		/**
 		 * Contructor de clase
+		 *
+		 * @message 'Controller not found'
 		 */
-		function __construct($message = 'Controller not found', $code = 30, Exception $previous = null) {
+		function __construct($message = null, $code = 30, Exception $previous = null) {
 			header('HTTP/1.0 404 Not Found');
 			parent::__construct($message, $code, $previous);
 		}
@@ -39,8 +41,10 @@
 
 		/**
 		 * Contructor de clase
+		 *
+		 * @message 'Method not implemented'
 		 */
-		function __construct($message = 'Method not implemented', $code = 40, Exception $previous = null) {
+		function __construct($message = null, $code = 40, Exception $previous = null) {
 			header('HTTP/1.0 501 Not Implemented');
 			parent::__construct($message, $code, $previous);
 		}
@@ -62,8 +66,10 @@
 
 		/**
 		 * Contructor de clase
+		 *
+		 * @message "Bad AJAX Request"
 		 */
-		function __construct($message = "Bad AJAX Request", $code = 60, Exception $previous = null) {
+		function __construct($message = null, $code = 60, Exception $previous = null) {
 			header('HTTP/1.0 400 Bad Request');
 			parent::__construct($message, $code, $previous);
 		}
@@ -84,8 +90,10 @@
 
 		/**
 		 * Contructor de clase
+		 *
+		 * @message "Bad Request"
 		 */
-		function __construct($message = "Bad Request", $code = 400, Exception $previous = null) {
+		function __construct($message = null, $code = 400, Exception $previous = null) {
 			header('HTTP/1.0 400 Bad Request');
 			parent::__construct($message, $code, $previous);
 		}
@@ -106,8 +114,10 @@
 
 		/**
 		 * Contructor de clase
+		 *
+		 * @message "Authentication Required"
 		 */
-		function __construct($message = "Authentication Required", $code = 401, Exception $previous = null) {
+		function __construct($message = null, $code = 401, Exception $previous = null) {
 			header('HTTP/1.0 401 Unauthorized');
 			parent::__construct($message, $code, $previous);
 		}
@@ -128,8 +138,10 @@
 
 		/**
 		 * Contructor de clase
+		 *
+		 * $message = "The user hasn't authorized the application to perform this action"
 		 */
-		function __construct($message = "The user hasn't authorized the application to perform this action", $code = 403, Exception $previous = null) {
+		function __construct($message = null, $code = 403, Exception $previous = null) {
 			header('HTTP/1.0 403 Forbidden');
 			parent::__construct($message, $code, $previous);
 		}

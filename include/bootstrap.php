@@ -128,6 +128,13 @@
     if (!defined('WEBROOT_URL')) {
         define('WEBROOT_URL', ROOT_URL . 'webroot/');
     }
+
+/**
+ * URL absoluta del sitio donde será hospedado el proyecto
+ */
+    if (!defined('SITE_URL')) {
+        define('SITE_URL', 'http://localhost/Skeleton');
+    }    
     
     require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'Connection.class.php';
     require_once ROOT . 'Config' . DS . 'DataSource' . DS . 'ConnectionFactory.class.php';
@@ -149,6 +156,7 @@
 
     require_once LIB . 'i18n.class.php';
     require_once INCLD . 'functions.php';
+    require_once LIB . 'Cache.php';
 
     if (file_exists(LIB . 'FactoryDAO.class.php'))
         include_once LIB . 'FactoryDAO.class.php';

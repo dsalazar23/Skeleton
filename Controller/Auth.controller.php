@@ -29,7 +29,7 @@ class AuthController {
      * @return boolean <true> si hay una sesión de usuario activa, <false> de lo contrario
      */
     public function hasSession($json = null) {
-        if (!isset($_SESSION['userId'])) {
+        if (!isset($_SESSION['user'])) {
             return $this->refreshSession($json);
         }
 
@@ -80,7 +80,8 @@ class AuthController {
      * 
      * @param string $uri Se configura con la uri a redireccionar cuando la sesión
      *               de usuario es reactivada. Si $uri es igual
-     *               a null, se permite la continuación del llamado.
+     *               a null (esto ocurre cuando se está refrescando la sesión),
+     *               se permite la continuación del llamado.
      *
      * @param boolean $remember Determina si el usuario decide quedar recordado
      *                          en el navegador. Si es <true> se crea una cookie
@@ -90,19 +91,17 @@ class AuthController {
 
         $this->user = $user;
 
+        // Error en la autenticación (no coincide username y password)
         if (is_numeric($this->user)) {
             $error = ($this->user == -1) ? '' : 'error=' . $this->user;
             $uri = ($uri == ROOT_URL) ? '' : '&uri=' . urlencode($uri);
 
-            header('Location: ' . ROOT_URL . '?' . $error . $uri);
+            header('Location: ' . ROOT_URL . 'Login?' . $error . $uri);
             exit();
         }
         
         //Creando Variables de sesión
         $_SESSION['user']         = $this->user;
-        $_SESSION['userId']       = $this->user->getId();
-        $_SESSION['username']     = $this->user->getUsername();
-        $_SESSION['fullname']     = $this->user->getFullname();
 
         // Cuando el usuario marco la casilla de 'recordarme'
         if ($remember) {
@@ -125,10 +124,7 @@ class AuthController {
      * @param User $user Instancia de usuario con los datos modificado.
      */
     public function refreshSessionVars($user) {
-        $_SESSION['user']       = $user;
-        $_SESSION['userId']     = $user->getId();
-        $_SESSION['username']   = $user->getUsername();
-        $_SESSION['fullname']   = $user->getFullname();
+        $_SESSION['user'] = $user;
     }
     
     
@@ -139,11 +135,6 @@ class AuthController {
     public function logout() {
 
         //Destruyendo variables de sesion
-        unset($_SESSION['user']);
-        unset($_SESSION['userId']);
-        unset($_SESSION['username']);
-        unset($_SESSION['fullname']);
-
         setcookie('token', null, 0, '/');
         session_destroy();
 

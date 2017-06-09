@@ -335,7 +335,7 @@
     function validateData(data) {
         if (data.error != undefined) {
             var title = eval('i18n.err' + data.error.code)
-                ,content = eval('i18n.err' + data.error.code + 'Msg');
+                ,content = data.error.msg || eval('i18n.err' + data.error.code + 'Msg');
             
             $.untInputWin({
                 title: title,

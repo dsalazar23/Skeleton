@@ -41,10 +41,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 --
 -- Volcado de datos para la tabla `users`
+-- Usuario: skeleton Contraseña: skeleton
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `username`, `email`, `password`) VALUES
-(1, 'Jose', 'Peralta', 'skeleton', 'skeleton@skeleton.com', 'xTGDh2rC/o62yiGhk9HPeQ==');
+(1, 'Jose', 'Peralta', 'skeleton', 'skeleton@skeleton.com', 'Qa2veo8Zq7X3cZzT5lSdcA==');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

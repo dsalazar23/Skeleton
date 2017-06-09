@@ -7,6 +7,7 @@
 
     $.fn.untInputMsg = function(options) {
         var defaults = {
+            duration: 0,
             content: '',
             title: '',
             type: 'Ok',
@@ -45,13 +46,17 @@
                 $this.find('.untMsgTitle').remove();
 
             $this.find('.untMsgDelete').on('click', function(){
-                $this.remove();
+                $this.html('');
             });
+
+            if (opts.duration) 
+                setTimeout(function(){ $this.html(''); }, opts.duration*1000);
         });
     }
 
     $.untInputWin = function(options) {
         var defaults = {
+            title: undefined,
             content: '',
             data: '',
             btnAccept: true,
@@ -68,90 +73,76 @@
         if (typeof(options) != 'object')
             options = {content: options}
 
-        var opts = $.extend(defaults, options)
-        
-        //Cargando el contenido dinamicamente si opts.content es una URL
+        var opts = $.extend(defaults, options),
+            elems = [];
+
+        elems.bg =      $('<div>', {Class: 'untWinBG'}).appendTo( $('body') );
+        elems.win =     $('<div>', {Class: 'untWin ' + opts.classes}).css({ width: opts.width, height: opts.height, 'max-width': opts.maxWidth }).appendTo( elems.bg );
+        elems.header =  $('<div>', {Class: 'untWinHeader'}).html( opts.title ).appendTo( elems.win );
+        elems.close =   $('<span>', {Class: 'untWinClose icon-cancel-circle'}).appendTo( elems.header );
+        elems.content = $('<div>', {Class: 'untWinContent'}).html( opts.content ).appendTo( elems.win );
+        elems.footer =  $('<div>', {Class: 'untWinFooter'}).appendTo( elems.win );
+        elems.btnAccept = $('<button>', {Class: 'btnWinAccept untBtn darkblue'}).html( i18n.accept ).appendTo( elems.footer );
+        elems.btnCancel = $('<button>', {Class: 'btnWinCancel untBtn'}).html( i18n.cancel ).appendTo( elems.footer );
+
+        elems.close.on('click', function(e){ untInputWinRemove(); });
+        untInputWinCenter();
+
+        // Cargando el contenido dinamicamente si opts.content es una URL
         if (isURL(opts.content)) {
             var exit = false;
+            elems.content.html('<img src="' + WEBROOT_URL + 'img/default/loader.gif" alt="Loader" style="display:inherit;margin:0 auto;" width="30px" height="30px">');
+            elems.btnAccept.hide();
 
             $.ajax ({
                 url: opts.content,
                 data: opts.data,
-                async: false,
                 success: function(data) {
-                    if (isURL(data))
-                        location.href = data
-                    else
-                        opts.content = data
+                    if (opts.btnAccept) elems.btnAccept.show();
+                    (isURL(data)) ? location.href = data : elems.content.html( data );
+                    opts.onLoadContent(elems.content);
+                    untInputWinCenter();
                 }
-            }).error(function(data){
-                exit = true;
+            })
+            .error(function(){
+                elems.bg.remove();
             });
-
-            if (exit)
-                return;
         }
-
-        $('body').append('<div class="untWinBG">\n\
-                          <div class="untWin ' + opts.classes + '">\n\
-                              <div class="untWinHeader">' + opts.title + '</div>\n\
-                              <div class="untWinContent">' + opts.content + '</div>\n\
-                              <div class="untWinFooter">\n\
-                                 <button class="btnWinAccept yellow untBtn">' + i18n.accept + '</button>\n\
-                                 <button class="btnWinCancel untBtn">' + i18n.cancel + '</button>\n\
-                             </div>\n\
-                          </div></div>');
         
-        if (!opts.title)
-            $('.untWinHeader').last().hide()
+        if (!opts.title) elems.header.hide();
 
         if (opts.btnAccept) {
-            $('.btnWinAccept').last().on('click', function(){
-                if (opts.clickAccept() !== false)
-                    untInputWinRemove()
-            })
+            elems.btnAccept.on('click', function(){
+                if (opts.clickAccept(elems.content) !== false)
+                    untInputWinRemove();
+            });
         } else {
-            $('.btnWinAccept').last().hide()
+            elems.btnAccept.hide();
         }
 
         if (opts.btnCancel) {
-            $('.btnWinCancel').last().on('click', function(){
+            elems.btnCancel.on('click', function(){
                 if(opts.clickCancel() !== false)
-                    untInputWinRemove()
-            })
+                    untInputWinRemove();
+            });
         } else {
-            $('.btnWinCancel').last().hide()
+            elems.btnCancel.hide();
         }
 
-        if (!opts.btnAccept && !opts.btnCancel) {
-            $('.untWinFooter').last().hide();
-        }
-        
-        $('.untWin').last().css({
-            width: opts.width,
-            height: opts.height,
-            'max-width': opts.maxWidth
-        });
-
-        $('.untWinBG').last().on('click', function(e){
-            if ($(e.target).hasClass('untWinBG'))
-                untInputWinRemove();
-        });        
-        
-        untInputWinCenter();
-        opts.onLoadContent();
+        if (!opts.btnAccept && !opts.btnCancel) elems.footer.hide();
+        opts.onLoadContent(elems.content);
     }
 
     // --- Eventos de cambio de pantalla y tecla presionada
     $(window).on('resize', function() {
-        untInputWinCenter()
+        untInputWinCenter();
     })
 
     $(document).on('keydown', function(e) {
         var key = e.which || e.keycode
         if (key == 27) {
             if($('.untWin').length != 0) {
-                untInputWinRemove()
+                untInputWinRemove();
             }
         }
     });
@@ -185,20 +176,23 @@ function untInputWinCenter() {
  */
 function untInputWinRemove(all) {
     var untWin = $('.untWin').last()
+        ,untWinBG = $('.untWinBG').last();
 
-    if (all)
+    if (all) {
         untWin = $('.untWin');
+        untWinBG = $('.untWinBG');
+    }
 
     untWin.css({ top: -untWin.outerHeight() });
 
     if(!Modernizr.csstransitions) {
-        $('.untWinBG').last().remove();
+        untWinBG.remove();
         untWin.remove();
         return
     }
 
     setTimeout(function() {
-        $('.untWinBG').last().remove()
-        untWin.remove()
+        untWinBG.remove();
+        untWin.remove();
     }, 1000)
 }
