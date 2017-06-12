@@ -77,13 +77,8 @@ y ejecute el comando `grunt` desde la raíz del proyecto.
 
 ### Creación del modelo de datos:
 Siga los siguiente pasos para crear el modelo de datos de la aplicación. Dentro de este repositorio encontrará una archivo llamado skeleton.sql. Este archivo permite crear una base de datos con una simple tabla `users` para `MySQL`. Cree esta base de datos, configure la conexión en el archivo `Config/DataSource/ConnectionProperty.class.php`y enseguida ejecute el 
-archivo autogenerate.php (IMPORTANTE: Corre el comando "php autogenerate.php" ubicado directamente en la carpeta Autogenerate)que lo encuentra en: 
+archivo autogenerate.php desde la consola que lo encuentra en la raíz del proyecto: 
 
-```shell
-C:/{RUTA AL SERVIDOR WEB}/{NOMBRE_DEL_PROYECTO}/DataAccess/Autogenereate/autogenerate.php
-```
-
-Corra el comando
 ```shell
 php autogenerate.php
 ```

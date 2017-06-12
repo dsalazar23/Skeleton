@@ -8,15 +8,30 @@
  * @author      JpBaena13
  * @since       PHP 5
  */
+if (!defined('DS'))
+    define('DS', DIRECTORY_SEPARATOR);
 
-define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(dirname(__FILE__))) . DS);
-define('DATA_SOURCE', ROOT . 'Config' . DS . 'DataSource' . DS);
-define('DATA_ACCESS', ROOT . 'DataAccess' . DS);
-define('MODEL_CLASS_PATH', ROOT . 'Model' . DS);
-define('LIB', ROOT . 'Lib' . DS);
-define('TEMPLATES', 'Templates' . DS);
-define('INCLD', ROOT . 'include' . DS);
+if (!defined('ROOT'))
+    define('ROOT', dirname(dirname(dirname(__FILE__))) . DS);
+
+if (!defined('DATA_SOURCE'))
+    define('DATA_SOURCE', ROOT . 'Config' . DS . 'DataSource' . DS);
+
+if (!defined('DATA_ACCESS'))
+    define('DATA_ACCESS', ROOT . 'DataAccess' . DS);
+
+if (!defined('MODEL_CLASS_PATH'))
+    define('MODEL_CLASS_PATH', ROOT . 'Model' . DS);
+
+if (!defined('LIB'))
+    define('LIB', ROOT . 'Lib' . DS);
+
+if (!defined('TEMPLATES'))
+    define('TEMPLATES', DATA_ACCESS . 'Autogenerate' . DS . 'Templates' . DS);
+
+if (!defined('INCLD'))
+    define('INCLD', ROOT . 'include' . DS);
+
 
 
 require_once(DATA_SOURCE . 'Connection.class.php');
@@ -26,8 +41,8 @@ require_once(DATA_SOURCE . 'QueryExecutor.class.php');
 require_once(DATA_SOURCE . 'SqlQuery.class.php');
 require_once(DATA_SOURCE . 'Transaction.class.php');
 
-require_once('Template.class.php');
-$config = require_once('Config.class.php');
+require_once(DATA_ACCESS . 'Autogenerate' . DS . 'Template.class.php');
+$config = require_once(DATA_ACCESS . 'Autogenerate' . DS . 'Config.class.php');
 
 /**
  * Función principal del Archivo, ejecuta todas las funciones de auto-generated.
@@ -776,7 +791,7 @@ $config = require_once('Config.class.php');
         $template = new Template(TEMPLATES . 'FactoryDAO.tpl');
         $template->set('content', $str);
 
-        $template->write('FactoryDAO.class.php');
+        $template->write(DATA_ACCESS . 'Autogenerate' . DS . 'FactoryDAO.class.php');
     }
 
 /**
@@ -812,7 +827,7 @@ $config = require_once('Config.class.php');
 
         $template = new Template(TEMPLATES . 'IncludeDAO.tpl');
         $template->set('include', $str);
-        $template->write('includeDAO.php');
+        $template->write(DATA_ACCESS . 'Autogenerate' . DS . 'includeDAO.php');
     }
 
 /**

@@ -1,5 +1,11 @@
+v.0.4.1
+	data 2017-06-12
+	- Permitiendo ejecución de autogenerate.php desde la raíz del proyecto
+	
 v0.4
 	data 2017-06-12
+	- (!!) Permitiendo el cambio de nombre de entidades respecto a nombre en base de datos (para uso de prefijos)
+	- (!!) Inclusión de archivo DataAccess/Autogenerate/Config.class.php con la configuración de nombres de entidades
 	- Cambiando include/DataAccessGenerate => DataAccess/Autogenerate/autogenerate.php
 	- Completando autogenerate.php para crear modelos con multiples claves primarias
 	- Cambiando de posición Lib/i18n.php => include/i18n.php
