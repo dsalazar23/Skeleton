@@ -10,12 +10,12 @@
  */
 
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT', dirname(dirname(__FILE__)) . DS);
+define('ROOT', dirname(dirname(dirname(__FILE__))) . DS);
 define('DATA_SOURCE', ROOT . 'Config' . DS . 'DataSource' . DS);
 define('DATA_ACCESS', ROOT . 'DataAccess' . DS);
 define('MODEL_CLASS_PATH', ROOT . 'Model' . DS);
 define('LIB', ROOT . 'Lib' . DS);
-define('TEMPLATES', LIB . 'Templates' . DS);
+define('TEMPLATES', 'Templates' . DS);
 define('INCLD', ROOT . 'include' . DS);
 
 
@@ -26,29 +26,49 @@ require_once(DATA_SOURCE . 'QueryExecutor.class.php');
 require_once(DATA_SOURCE . 'SqlQuery.class.php');
 require_once(DATA_SOURCE . 'Transaction.class.php');
 
-require_once(LIB .'Template.class.php');
+require_once('Template.class.php');
+$config = require_once('Config.class.php');
 
 /**
  * Función principal del Archivo, ejecuta todas las funciones de auto-generated.
  */
     function generate($flag = false) {
-        
         //Obteniendo todas las tablas de la base de datos configurada
         $tables = QueryExecutor::execute(new SqlQuery('show TABLES'));
         
         if (!$flag) {
+            echo "\n............................";
+            echo "\nCreando Carpetas";
             createFolders();
+
+            echo "\n............................";
+            echo "\nCreando DTO's";
             generateDTOObjects($tables);
+
+            echo "\n............................";
+            echo "\nCreando DAO Interfaces ";
             generateInterfaceDAOObjects($tables);
+
+            echo "\n............................";
+            echo "\nCreando DAO Class Gen ";
             generateGenDAOObjects($tables);
             generateGenDAOObjectsMg($tables);
+
+            echo "\n............................";
+            echo "\nCreando DAO Class ";
             generateDAOObjects($tables);
+
+            echo "\n............................";
+            echo "\nCreando Model Class ";
             generateModelObjects($tables);
         }
+
         createFactoryDAO($tables);
         createIncludeFile($tables);
         
-        echo "<h3>Creación de Acceso a Datos Terminada Exitosamente</h3>";
+        print "\n\n\n-----------------------------------------------------";
+        print "\nCreacion de Acceso a Datos Terminada Exitosamente";
+        print "\n-----------------------------------------------------";
     }
 
 /**
@@ -74,7 +94,7 @@ require_once(LIB .'Template.class.php');
     function generateDTOObjects($tables) {
         for ($i = 0; $i < count($tables); $i++) {
 
-            if (!doesTableContainPK($tables[$i])) {
+            if (!getPKsTable($tables[$i])) {
                 continue;
             }
 
@@ -121,18 +141,18 @@ require_once(LIB .'Template.class.php');
         }
     }
 
-/**
- * Permite generar las interfaces *DAOInterface para cada tabla de la base de datos.
- *
- * @param array $tables
- *        Conjunto de tablas de la base de datos a las que se le crearán el
- *        *DAOInterface.
- */
+// /**
+//  * Permite generar las interfaces *DAOInterface para cada tabla de la base de datos.
+//  *
+//  * @param array $tables
+//  *        Conjunto de tablas de la base de datos a las que se le crearán el
+//  *        *DAOInterface.
+//  */
     function generateInterfaceDAOObjects($table) {
 
         for ($i = 0; $i < count($table); $i++) {
 
-            if (!doesTableContainPK($table[$i])) {
+            if (!getPKsTable($table[$i])) {
                 continue;
             }
 
@@ -248,7 +268,7 @@ require_once(LIB .'Template.class.php');
 
         for ($i = 0; $i < count($tables); $i++) {
 
-            if (!doesTableContainPK($tables[$i])) {
+            if (!getPKsTable($tables[$i])) {
                 continue;
             }
 
@@ -405,7 +425,7 @@ require_once(LIB .'Template.class.php');
 
         for ($i = 0; $i < count($tables); $i++) {
 
-            if (!doesTableContainPK($tables[$i])) {
+            if (!getPKsTable($tables[$i])) {
                 continue;
             }
 
@@ -573,7 +593,7 @@ require_once(LIB .'Template.class.php');
 
         for ($i = 0; $i < count($tables); $i++) {
 
-            if (!doesTableContainPK($tables[$i])) {
+            if (!getPKsTable($tables[$i])) {
                 continue;
             }
 
@@ -604,7 +624,7 @@ require_once(LIB .'Template.class.php');
 
         for ($i = 0; $i < count($tables); $i++) {
 
-            if (!doesTableContainPK($tables[$i])) {
+            if (!getPKsTable($tables[$i])) {
                 continue;
             }
 
@@ -635,26 +655,54 @@ require_once(LIB .'Template.class.php');
 
         for ($i = 0; $i < count($tables); $i++) {
 
-            if (!doesTableContainPK($tables[$i])) {
+            $pks = getPKsTable($tables[$i]);
+
+            if (!$pks) {
                 continue;
             }
+
+            $pk_params = '';
+            $pk_null = '';
+            $pk_load = '';
+
+            foreach ($pks as $pk) {
+                $f = getVarNameWithS($pk);
+                $pk_params .= ", \$$f = null";
+                $pk_null .= " || !\$$f";
+                $pk_load .= ", \$$f";
+            }
+
+            $pk_params = substr($pk_params, 2);
+            $pk_null = substr($pk_null, 4);
+            $pk_load = substr($pk_load, 2);
 
             $tableName = $tables[$i][0];
             $className = getClassName($tableName);
 
             $template = new Template(TEMPLATES . 'ModelObjectsGen.tpl');
+            
+            $insert = "FactoryDAO::get\${domain_class_name}DAO()->insert(\$this->\${DTO_name})";
+            
+            if ($pks[0] == 'id')
+                $insert = "\$this->setId($insert)";
+            
+            $template->set('insert', "$insert");
             $template->set('domain_class_name', $className);
             $template->set('table_name', $tableName);
+            $template->set('pk_params', "$pk_params");
+            $template->set('pk_load', "$pk_load");
+
             $tab = getFields($tableName);
             $fields = $gets = $sets = "";
             $fields .= "/**DTO por defecto para esta clase*/\n\t";
             $fields .= "protected \$" . getVarName($tableName) . "DTO;";
-            $constructor= "if (!\$id) {
+            $constructor= "if ($pk_null) {
             \$this->" . getVarName($tableName) . 'DTO = new '
             . getClassName($tableName) . "DTO();
         } else {
             \$this->" . getVarName($tableName) . 'DTO = FactoryDAO::get'
-            . $className . "DAO()->load(\$id);
+            . $className . "DAO()->load($pk_load);
+            \$this->update = true;
         }";
 
             $sql = 'select COLUMN_COMMENT from INFORMATION_SCHEMA.COLUMNS  where
@@ -705,7 +753,7 @@ require_once(LIB .'Template.class.php');
 
         for($i=0;$i<count($tables);$i++){
 
-            if(!doesTableContainPK($tables[$i])){
+            if(!getPKsTable($tables[$i])){
                 continue;
             }
 
@@ -728,7 +776,7 @@ require_once(LIB .'Template.class.php');
         $template = new Template(TEMPLATES . 'FactoryDAO.tpl');
         $template->set('content', $str);
 
-        $template->write(LIB . 'FactoryDAO.class.php');
+        $template->write('FactoryDAO.class.php');
     }
 
 /**
@@ -742,7 +790,7 @@ require_once(LIB .'Template.class.php');
         for ($i = 0; $i < count($tables); $i++) {
             $tableName = $tables[$i][0];
 
-            if (!doesTableContainPK($tables[$i])) {
+            if (!getPKsTable($tables[$i])) {
                 continue;
             }
 
@@ -764,26 +812,29 @@ require_once(LIB .'Template.class.php');
 
         $template = new Template(TEMPLATES . 'IncludeDAO.tpl');
         $template->set('include', $str);
-        $template->write(INCLD . 'includeDAO.php');
+        $template->write('includeDAO.php');
     }
 
 /**
- * Determina si la tabla especificada contiene o no clave primaria
+ * Determina si la tabla especificada contiene o no clave primaria y
+ * en caso de que la contenga retorn el nombre de ésta.
  *
  * @param string $table
  *        Nombre de la tabla
  *
- * @return boolean <code>true</code> si la tabla contiene clave primaria, de lo
- *                 contrario <code>false</code>.
+ * @return string/null  Nombre de la clave primaria en caso en que exita
  */
-    function doesTableContainPK($table) {
+    function getPKsTable($table) {
+        $pk = null;
         $row = getFields($table[0]);
         for ($j = 0; $j < count($row); $j++) {
             if ($row[$j][3] == 'PRI') {
-                return true;
+                if (!$pk) $pk = [];
+
+                array_push($pk, $row[$j][0]);
             }
         }
-        return false;
+        return $pk;
     }
 
 /**
@@ -815,6 +866,12 @@ require_once(LIB .'Template.class.php');
  * @return string Nombre de la clase que hará referencia a la tabla.
  */
     function getClassName($tableName) {
+        global $config;
+
+        if(isset($config['tableNames'][$tableName])) {
+            $tableName = $config['tableNames'][$tableName];
+        }
+
         $tableName = strtoupper($tableName[0]) . substr($tableName, 1);
 
         for ($i = 0; $i < strlen($tableName); $i++) {
@@ -950,17 +1007,11 @@ require_once(LIB .'Template.class.php');
         return $word;
     }
 
-// --- Corriendo función generate
-if (!isset($_GET['key']) || ($_GET['key'] != 'executeDAO' && $_GET['key'] != 'changeDB')) {
-    echo '<b><font style:"font-size:15px">UnNotes</b><br/>Sorry.. You are not authorized to execute this file';
-    return;
-}
 
-if ($_GET['key'] != 'changeDB')
-    generate();
-else {
-    generate(true);
-}
-
+    // if ($_GET['key'] != 'changeDB')
+        generate();
+    // else {
+        // generate(true);
+    // }
 
 ?>

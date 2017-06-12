@@ -1,3 +1,11 @@
+v0.4
+	data 2017-06-12
+	- Cambiando include/DataAccessGenerate => DataAccess/Autogenerate/autogenerate.php
+	- Completando autogenerate.php para crear modelos con multiples claves primarias
+	- Cambiando de posición Lib/i18n.php => include/i18n.php
+	- Implementado sistema de Cache por archivo
+	- Cambiando de posición Lib/Cache.php => include/Cache.php
+
 v0.3
 	date 2014-08-01
 	- Compatibilidad con MongoDB

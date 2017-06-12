@@ -22,6 +22,15 @@ en `NOMBRE_DEL_PROYECTO` por el nombre real, para los 3 archivos:
  */
     if (!defined('PRJCT_NAME'))
         define('PRJCT_NAME', 'NOMBRE_DEL_PROYECTO');
+
+    ...
+
+/**
+ * Dominio del sitio donde será hospedado el proyecto
+ */
+    if (!defined('SITE_URL')) {
+        define('SITE_URL', 'http://localhost/Skeleton');
+    }
 ```
 
 #### webroot/js/bootstrap.js
@@ -66,11 +75,17 @@ Con este comando instala globalmente el plugin `uglify`
 Finalmente, procese los archivos `main.styl` y `home.styl`  con la herramienta `stylus`, 
 y ejecute el comando `grunt` desde la raíz del proyecto.
 
-###Creación del modelo de datos:
-Siga los siguiente pasos para crear el modelo de datos de la aplicación. Dentro de este repositorio encontrará una archivo llamado skeleton.sql. Este archivo crear una base de datos con una simple tabla `users` para `MySQL`. Cree esta base de datos, configure la conexión en el archivo `Config/DataSource/ConnectionProperty.class.php`y enseguida realice la siguiente petición a través del navegador:
+### Creación del modelo de datos:
+Siga los siguiente pasos para crear el modelo de datos de la aplicación. Dentro de este repositorio encontrará una archivo llamado skeleton.sql. Este archivo permite crear una base de datos con una simple tabla `users` para `MySQL`. Cree esta base de datos, configure la conexión en el archivo `Config/DataSource/ConnectionProperty.class.php`y enseguida ejecute el 
+archivo autogenerate.php (IMPORTANTE: Corre el comando "php autogenerate.php" ubicado directamente en la carpeta Autogenerate)que lo encuentra en: 
 
 ```shell
-http://{HOST}/{NOMBRE_DEL_PROYECTO}/include/DataAccessGenerate.php?key=executeDAO
+C:/{RUTA AL SERVIDOR WEB}/{NOMBRE_DEL_PROYECTO}/DataAccess/Autogenereate/autogenerate.php
+```
+
+Corra el comando
+```shell
+php autogenerate.php
 ```
  Si todo sale bien deberá de aparecer algo como esto:
 
@@ -82,12 +97,15 @@ C:\wamp\www\Skeleton\DataAccess\DAO\mongodb\gen\genUserMgDAO.class.php
 C:\wamp\www\Skeleton\Model\genModel\genUser.class.php
 C:\wamp\www\Skeleton\Lib\FactoryDAO.class.php
 C:\wamp\www\Skeleton\include\includeDAO.php
+
+-------------------------------------------------
 Creación de Acceso a Datos Terminada Exitosamente
+-------------------------------------------------
 ```
 
 Con esta petición se crearán todas las clases del acceso a datos (DAO, DTO), y las clases asociadas al Modelo (Model).
 
-###Controladores y sus notaciones
+### Controladores y sus notaciones
 Skeleton trabajo con un modelo MVC, lo que significa que toda petición hecha a la aplicación será atendida a través de un `Controller`. Las convenciones para trabajar con este modelo son como sigue:
 
 ```shell

@@ -11,12 +11,15 @@
  */
 class gen${domain_class_name} {
 
+    /** Permite determinar si el método save actualiza o inserta un nuevo registro*/
+    public $update = false;
+
     ${variables}
 
     /**
      * Constructor de la clase ${domain_class_name}
      */
-    function __construct($id = null) {
+    function __construct(${pk_params}) {
         ${constructor}
     }
 
@@ -42,11 +45,12 @@ class gen${domain_class_name} {
      * Guarda el objeto ${domain_class_name} en la base de datos.
      */
     public function save() {
-        if ($this->getId()) {
+        if ($this->update) {
             FactoryDAO::get${domain_class_name}DAO()->update($this->${DTO_name});
 
         } else {
-            $this->setId(FactoryDAO::get${domain_class_name}DAO()->insert($this->${DTO_name}));
+            ${insert};
+            $this->update = true;
         }
     }
     
@@ -75,11 +79,11 @@ class gen${domain_class_name} {
     /**
      * Elimina el objeto ${domain_class_name} en la base de datos.
      * 
-     * @param int $id 
-     *            Identificador único del objeto.
+     * @param [params] 
+     *            Variables que componen la clave primaria.
      */
-    public static function delete($id) {
-        return FactoryDAO::get${domain_class_name}DAO()->delete($id);
+    public static function delete(${pk_load}) {
+        return FactoryDAO::get${domain_class_name}DAO()->delete(${pk_load});
     }
     
     // *** Métodos GETS ***

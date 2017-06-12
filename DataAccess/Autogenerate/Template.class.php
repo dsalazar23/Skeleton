@@ -69,7 +69,7 @@ class Template {
      *        Nombre del archivo.
      */
     function write($fileName) {
-        echo $fileName . '<br/>';
+        echo "\n". $fileName;
         $fd = fopen($fileName, "w");
         fwrite($fd, $this->content);
         fclose($fd);

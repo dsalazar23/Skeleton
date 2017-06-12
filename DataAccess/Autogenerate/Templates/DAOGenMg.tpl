@@ -11,9 +11,9 @@
  * @since       PHP 5
  */
  
- require_once(LIB . 'AbstractDAO.class.php');
+ require_once(DATA_ACCESS . DS . 'Autogenerate' . DS . 'AbstractDAO.class.php');
  
-class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOInterface {
+class ${dao_class_name}DAO implements ${idao_class_name}DAOInterface {
 
     /**
      * Inserta un registro a la tabla '${table_name}'.
@@ -22,11 +22,17 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
      *        Objeto a insertar en la base de datos.
      */
     public function insert($${var_name}DTO) {
-        $sql = 'INSERT INTO ${table_name} (${insert_fields2}) VALUES (${question_marks2})';
-        $sqlQuery = new SqlQuery($sql);
-        ${parameter_setter}
-        ${pk_set_update}
-        return $this->executeInsert($sqlQuery);
+
+        $db = Connection::getDatabase();
+        
+        $collection = $db->${table_name};
+
+        $${var_name}DTO->_id = new MongoID();
+        unset($${var_name}DTO->id);
+
+        $collection->insert($${var_name}DTO);
+
+        return $${var_name}DTO->_id;
     }
 
     /**
@@ -38,10 +44,15 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
      * @return ${domain_class_name} Objeto que tiene como clave primaria $id
      */
     public function load(${pk}) {
-        $sql = 'SELECT * FROM ${table_name} WHERE ${pk_where}';
-        $sqlQuery = new SqlQuery($sql);
-        ${pk_set}
-        return $this->getRow($sqlQuery);
+        $db = Connection::getDatabase();
+
+        $collection = $db->${table_name};
+
+        ${array_keys};
+
+        $result = $collection->findOne( $keys );
+
+        return $this->readRow($result);
     }
     
     /**
@@ -52,11 +63,15 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
      * @see executeUpdate()
      */
     public function update($${var_name}DTO) {
-        $sql = 'UPDATE ${table_name} SET ${update_fields} WHERE ${pk_where}';
-        $sqlQuery = new SqlQuery($sql);
-        ${parameter_setter}
-        ${pk_set_update}
-        return $this->executeUpdate($sqlQuery);
+        $db = Connection::getDatabase();
+
+        $collection = $db->${table_name};
+
+        unset($${var_name}DTO->id);
+
+        $collection->save($${var_name}DTO);
+
+        $${var_name}DTO->id = $${var_name}DTO->_id;
     }
     
     /**
@@ -67,10 +82,13 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
      * @see executeUpdate()
      */
     public function delete(${pk}) {
-        $sql = 'DELETE FROM ${table_name} WHERE ${pk_where}';
-        $sqlQuery = new SqlQuery($sql);
-        ${pk_set}
-        return $this->executeUpdate($sqlQuery);
+        $db = Connection::getDatabase();
+
+        $collection = $db->${table_name};
+
+        ${array_keys};
+
+        $collection->remove( $keys );
     }
 
     /**
@@ -79,10 +97,13 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
      * @return array Conjunto de registros de la tabla '${table_name}'.
      */
     public function queryAll() {
-        $sql = 'SELECT * FROM ${table_name}';
-        $sqlQuery = new SqlQuery($sql);
+        $db = Connection::getDatabase();
 
-        return $this->getList($sqlQuery);
+        $collection = $db->${table_name};
+
+        $cursor = $collection->find();
+
+        return $this->getList( $cursor );
     }
 
     /**
@@ -151,6 +172,24 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
 
     // Los siguiente funciones  son la ejecución de mas bajo nivel para cada
     // una de las consultas creadas anteriormente.
+    
+    /**
+     * Retorna un arreglo de objetos ${domain_class_name} a partir
+     * de los datos especificados en el cursor.
+     * 
+     * @param  MongoCursor $cursor Conjunto de registros obtenidos desde la base de datos
+     * 
+     * @return Array Arreglo de objetos ${domain_class_name}
+     */
+    protected function getList( $cursor ) {
+        $result = array();
+
+        foreach ($cursor as $key ) {
+            array_push($result, $this->readRow($key) );
+        }
+
+        return $result;
+    }
      
     /**
      * Convierte una fila dada desde la tabla '${table_name}' a un objeto de
@@ -160,7 +199,12 @@ class ${dao_class_name}DAO extends AbstractDAO implements ${idao_class_name}DAOI
      *         Objeto que representa la tabla '${table_name}'
      */
     protected function readRow($row) {
+        if (!$row)
+            return null;
+
         $${var_name}DTO = new ${domain_class_name}DTO();
+        $${var_name}DTO->_id = $row['_id'];
+        $${var_name}DTO->id = $row['_id'];
         ${read_row}
         return $${var_name}DTO;
     }
