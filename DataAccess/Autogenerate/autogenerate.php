@@ -912,6 +912,13 @@ $config = require_once(DATA_ACCESS . 'Autogenerate' . DS . 'Config.class.php');
  * @return string Nombre de la variable que hará referencia al campo.
  */
     function getVarName($field) {
+        global $config;
+
+        //Aplica para la variables con el nombre de la clase
+        if(isset($config['tableNames'][$field])) {
+            $field = $config['tableNames'][$field];
+        }
+
         $field = strtolower($field[0]) . substr($field, 1);
 
         for ($i = 0; $i < strlen($field); $i++) {
@@ -942,6 +949,13 @@ $config = require_once(DATA_ACCESS . 'Autogenerate' . DS . 'Config.class.php');
  * @return string Nombre de la variable que hará referencia al campo.
  */
     function getVarNameWithS($field) {
+        global $config;
+
+        //Aplica para la variables con el nombre de la clase        
+        if(isset($config['tableNames'][$field])) {
+            $field = $config['tableNames'][$field];
+        }
+
         $field = strtolower($field[0]) . substr($field, 1);
 
         for ($i = 0; $i < strlen($field); $i++) {
