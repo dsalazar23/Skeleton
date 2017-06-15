@@ -15,7 +15,7 @@ class ConnectionProperty {
     private static $database = 'skeleton';
 
     public static function getHost() {
-        if (isset($_SERVER['SERVER_NAME']) && 
+        if (!isset($_SERVER['SERVER_NAME']) ||
                 $_SERVER['SERVER_NAME'] == 'localhost') return 'localhost';
         return ConnectionProperty::$host;
     }
