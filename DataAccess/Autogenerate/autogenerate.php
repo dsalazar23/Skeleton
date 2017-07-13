@@ -48,8 +48,21 @@ $config = require_once(DATA_ACCESS . 'Autogenerate' . DS . 'Config.class.php');
  * Función principal del Archivo, ejecuta todas las funciones de auto-generated.
  */
     function generate($flag = false) {
+        global $config;
+        
         //Obteniendo todas las tablas de la base de datos configurada
         $tables = QueryExecutor::execute(new SqlQuery('show TABLES'));
+
+        if ($config['OnlyConfigTables']) {
+            $tables_ = [];
+            foreach($tables as $table) {
+                foreach ($config['tableNames'] as $tableName => $entity) {
+                    if ($table[0] == $tableName)
+                        array_push($tables_, $table);
+                }
+            }
+            $tables = $tables_;
+        }
         
         if (!$flag) {
             echo "\n............................";
